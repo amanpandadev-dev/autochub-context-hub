@@ -1,97 +1,146 @@
-# Quick Reference - Memgraph Implementation
+# ⚡ Quick Reference Card
 
-## One Command Setup
+## 🎯 3-Step GitHub Configuration
+
+### 1️⃣ Add NPM Token (2 min)
+```
+Settings → Secrets and variables → Actions → New repository secret
+Name: NPM_TOKEN
+Secret: [paste npm token from https://www.npmjs.com/settings/tokens]
+```
+
+### 2️⃣ Enable Branch Protection (3 min)
+```
+Settings → Branches → Add rule
+Pattern: main
+✓ Require pull request reviews
+✓ Require status checks (test, build)
+✓ Require branches up to date
+```
+
+### 3️⃣ Enable Code Security (2 min)
+```
+Settings → Code security and analysis
+✓ Dependabot alerts
+✓ Dependabot security updates
+✓ Secret scanning
+✓ Push protection
+```
+
+---
+
+## 📦 CLI Commands
+
 ```bash
+# Analyze code
+autochub analyze src/ --with-graph
+
+# Fix issues (dry-run)
+autochub fix src/ --dry-run
+
+# Generate report
+autochub report src/ --format html
+
+# Manage config
+autochub config get
+autochub config set key value
+```
+
+---
+
+## 🔧 Setup Commands
+
+```bash
+# Install dependencies
+npm install
+
+# Setup Memgraph
 npm run setup
+
+# Run example
+npm run example:memgraph
+
+# Run tests
+npm test
+
+# Build
+npm run build
 ```
 
-## Basic Usage
-```typescript
-import { MemgraphService } from './src/lib/memgraph';
+---
 
-const service = new MemgraphService();
-await service.initialize();
-await service.indexProject('./src');
+## 📊 Repository Info
 
-const context = await service.getDeprecationContext('ChatCompletion.create');
-console.log(context);
+- **URL**: https://github.com/amanpandadev-dev/autochub-context-hub
+- **Branch**: main
+- **Status**: Ready for configuration
+- **Files**: 95 total
+- **Documentation**: 30+ guides
 
-await service.shutdown();
+---
+
+## 📚 Key Documentation
+
+| File | Use When |
+|------|----------|
+| `GITHUB_CONFIGURATION_DETAILED.md` | Configuring GitHub |
+| `CLI_GUIDE.md` | Using the CLI |
+| `MEMGRAPH_IMPLEMENTATION.md` | Using Memgraph |
+| `SETUP_GUIDE.md` | Installing locally |
+| `NEXT_STEPS.md` | What to do next |
+
+---
+
+## ✅ Verification
+
+After each step, verify:
+
+**NPM_TOKEN:**
+```
+Settings → Secrets and variables → Actions
+Should see: NPM_TOKEN ✓
 ```
 
-## Key Methods
-
-| Method | Purpose |
-|--------|---------|
-| `initialize()` | Connect to Memgraph |
-| `indexProject(path)` | Index source files |
-| `getDeprecationContext(api)` | Get API analysis |
-| `findAllDeprecatedApis()` | Find all deprecated APIs |
-| `generateReport()` | Generate full report |
-| `shutdown()` | Cleanup |
-
-## Docker Commands
-
-| Command | Purpose |
-|---------|---------|
-| `docker run -d -p 7687:7687 memgraph/memgraph` | Start Memgraph |
-| `docker stop memgraph-autochub` | Stop Memgraph |
-| `docker start memgraph-autochub` | Restart Memgraph |
-| `docker logs memgraph-autochub` | View logs |
-
-## File Locations
-
-| File | Purpose |
-|------|---------|
-| `src/lib/memgraph/` | Core implementation |
-| `scripts/setup-memgraph.js` | Setup script |
-| `examples/memgraph-example.ts` | Usage example |
-| `.env.memgraph` | Configuration |
-| `docker-compose.memgraph.yml` | Docker config |
-
-## Response Format
-
-```typescript
-{
-  apiName: 'ChatCompletion.create',
-  totalUsages: 12,
-  impactedFiles: 5,
-  riskScore: 75,
-  usages: [
-    {
-      functionName: 'chatWithOpenAI',
-      filePath: 'src/chat.ts',
-      lineNumber: 42
-    }
-  ],
-  refactoringPath: {
-    from: 'ChatCompletion.create',
-    to: 'client.chat.completions.create',
-    steps: ['Update 12 usages', 'Run tests', 'Update docs'],
-    estimatedEffort: 'Medium'
-  }
-}
+**Branch Protection:**
+```
+Settings → Branches
+Should see: Rule for main ✓
 ```
 
-## Troubleshooting
+**Code Security:**
+```
+Settings → Code security and analysis
+Should see: All features enabled ✓
+```
+
+---
+
+## 🚀 After Configuration
+
+```bash
+# Create release
+git tag -a v1.0.0 -m "Release v1.0.0"
+git push origin v1.0.0
+
+# GitHub Actions will:
+# 1. Run tests
+# 2. Build project
+# 3. Publish to npm (if NPM_TOKEN set)
+```
+
+---
+
+## 🆘 Quick Troubleshooting
 
 | Issue | Solution |
 |-------|----------|
-| Connection failed | `docker restart memgraph-autochub` |
-| Port in use | `docker run -p 7688:7687 memgraph/memgraph` |
-| Out of memory | `docker run -m 4g -p 7687:7687 memgraph/memgraph` |
-| Slow queries | Create indexes: `CREATE INDEX ON :File(path)` |
+| NPM_TOKEN not working | Check token scope is "Automation" |
+| Branch protection not working | Verify status checks passed |
+| Code security not detecting issues | Wait 24 hours for initial scan |
+| GitHub Actions failing | Check workflow logs in Actions tab |
 
-## Performance
+---
 
-- **Indexing**: 1-2 sec per 100 files
-- **Queries**: 10-500ms
-- **Memory**: 50MB per 100 files
+**Total Configuration Time: ~7 minutes** ⏱️
 
-## Next Steps
-
-1. Run: `npm run setup`
-2. Try: `npx ts-node examples/memgraph-example.ts`
-3. Integrate with extension
-4. Create CLI commands
-
+Start with Step 1: Add NPM Token 🚀
