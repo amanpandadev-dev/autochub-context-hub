@@ -1,0 +1,25 @@
+Prompts:
+
+Learn:
+
+here is a deep research report for the topic we are going to discuss today. No action required. Use this report as additional context for your responses apart from web search and other resources.
+
+WIDEN:
+Act as a research aide for [selected challenge]. List key personas, top pains, current workarounds, and success metrics. Return 5 insights & 3 risks tailored to this challenge context.
+
+DIAGNOSE:
+Let’s pick the [top- pain- point] for this challenge. For this pain, run a Five Whys. Propose 3 root-cause hypotheses and the disproof evidence for each. Specify the minimum data cut & owners to pull. Output a root-cause map, test plan, and privacy constraints.
+
+Ideation:
+Generate and Cluster possible AI driven ideas into 3 Options:
+1.Process (policy, ways of working),
+2.Analytics/ML (forecast, optimise, recommend),
+3.AI and Automation (Computer Vision, Retrieval augmented generation/Agentic AI,etc...).
+Score each on Impact × Feasibility × Confidence × Time-to-Value.Recommend one pilot with the smallest integration surface and clearest value proof.
+
+BRIEF
+For the recommended pilot, create a one-page pilot brief including: Target user(s), problem statement, success metrics & baselines, target uplift, key flow (5–7 steps), screens/components, sample UI copy, representative sample data, integration points, and relevant guardrails (GDPR/PCI, domain specific regulation
+boundaries, bias tests, fallback behaviour)
+
+BUILD:
+You are a product design expert. Using only the brief above, write a single [platform] product requirements prompt that includes: Product name + one liner description (actions, process, capabilities), who it’s for, screens + key components, brand colors, main user flow, sample data, concise headlines/CTAs, UI instructions, success metric card, constraints (no PII). Return the [platform] prompt only.

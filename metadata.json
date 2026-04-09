@@ -1,0 +1,5 @@
+{
+  "name": "Auto-CHUB Agent Wrapper",
+  "description": "A context-first coding agent wrapper that fetches latest API documentation to prevent deprecated code generation.",
+  "requestFramePermissions": []
+}
