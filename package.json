@@ -2,10 +2,30 @@
   "name": "autochub-context-hub",
   "publisher": "autochub",
   "displayName": "Auto-CHUB Context Hub",
-  "description": "Context-first coding assistant with outdated API diagnostics and quick fixes.",
+  "description": "Context-first coding assistant with Memgraph analysis and CLI for detecting and fixing deprecated API calls.",
   "categories": ["Other"],
-  "private": true,
-  "version": "0.0.0",
+  "private": false,
+  "version": "1.0.0",
+  "author": "Auto-CHUB Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/amanpandadev-dev/autochub-context-hub.git"
+  },
+  "bugs": {
+    "url": "https://github.com/amanpandadev-dev/autochub-context-hub/issues"
+  },
+  "homepage": "https://github.com/amanpandadev-dev/autochub-context-hub#readme",
+  "keywords": [
+    "deprecated-api",
+    "code-analysis",
+    "memgraph",
+    "cli",
+    "refactoring",
+    "migration",
+    "typescript",
+    "javascript"
+  ],
   "main": "./out/extension-template.js",
   "bin": {
     "autochub": "./dist/cli/index.js"
@@ -167,11 +187,12 @@
   },
   "scripts": {
     "dev": "tsx server.ts",
-    "build": "vite build",
+    "build": "vite build && npm run build:cli",
+    "build:cli": "tsc -p tsconfig.cli.json",
     "build:extension": "tsc -p tsconfig.extension.json",
     "watch:extension": "tsc -w -p tsconfig.extension.json",
     "start": "NODE_ENV=production tsx server.ts",
-    "clean": "rm -rf dist",
+    "clean": "rm -rf dist out",
     "lint": "tsc --noEmit",
     "setup": "npm install && npm run setup:memgraph",
     "setup:memgraph": "node scripts/setup-memgraph.js"
@@ -184,7 +205,6 @@
     "dotenv": "^17.2.3",
     "express": "^4.21.2",
     "lucide-react": "^0.546.0",
-    "memgraph": "^1.0.0",
     "motion": "^12.38.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

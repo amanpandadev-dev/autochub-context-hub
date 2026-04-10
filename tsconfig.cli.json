@@ -1,0 +1,25 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "lib": ["ES2022"],
+    "outDir": "dist",
+    "rootDir": "src",
+    "noEmit": false,
+    "isolatedModules": true,
+    "allowImportingTsExtensions": false,
+    "sourceMap": true,
+    "types": ["node"],
+    "declaration": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": false,
+    "strict": false
+  },
+  "include": ["src/cli/**/*.ts", "src/lib/**/*.ts"],
+  "exclude": ["node_modules", "dist", "out", "examples", "src/lib/openrouter.ts"]
+}
