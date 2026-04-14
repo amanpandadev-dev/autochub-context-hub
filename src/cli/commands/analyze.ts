@@ -1,6 +1,8 @@
-import { MemgraphService } from '../../lib/memgraph';
-import * as fs from 'fs';
+#!/usr/bin/env node
 import * as path from 'path';
+import * as fs from 'fs';
+import { MemgraphService } from '../../lib/memgraph/service';
+import { AnalysisReport, Finding, Severity } from '../../lib/memgraph/types';
 
 interface AnalyzeOptions {
   withGraph?: boolean;
@@ -9,179 +11,141 @@ interface AnalyzeOptions {
   severity?: string;
   exclude?: string;
   maxResults?: string;
-  githubLinks?: boolean;
+  rules?: string;
+  useChub?: boolean;
 }
+
+const SEVERITY_ICON: Record<Severity, string> = {
+  critical: '🔴',
+  high:     '🟠',
+  medium:   '🟡',
+  low:      '🔵',
+};
 
 export async function analyzeCommand(projectPath: string = '.', options: AnalyzeOptions) {
-  try {
-    console.log('\n📊 Auto-CHUB Analyzer\n');
-    console.log(`📁 Analyzing: ${path.resolve(projectPath)}\n`);
+  const resolvedPath = path.resolve(projectPath);
+  console.log('\n📊  Auto-CHUB Analyzer\n');
+  console.log(`📁  Scanning: ${resolvedPath}`);
+  if (options.withGraph) console.log('🔗  Graph propagation: enabled');
+  if (options.severity)  console.log(`🎯  Severity filter: ${options.severity}`);
+  console.log();
 
-    if (options.withGraph) {
-      await analyzeWithMemgraph(projectPath, options);
-    } else {
-      await analyzeWithoutMemgraph(projectPath, options);
+  // Load custom rules from file if provided
+  const configRules = MemgraphService.loadConfigRules(resolvedPath);
+  let extraRules = configRules;
+  if (options.rules) {
+    try {
+      const raw = fs.readFileSync(path.resolve(options.rules), 'utf-8');
+      const parsed = JSON.parse(raw);
+      extraRules = [...configRules, ...(Array.isArray(parsed) ? parsed : parsed.rules ?? [])];
+    } catch (e) {
+      console.warn(`⚠️  Could not load rules file: ${options.rules}`);
     }
-  } catch (error) {
-    console.error('❌ Analysis failed:', error);
-    process.exit(1);
   }
-}
 
-async function analyzeWithMemgraph(projectPath: string, options: AnalyzeOptions) {
-  const service = new MemgraphService();
+  const service = new MemgraphService(extraRules);
 
   try {
-    console.log('🔗 Initializing Memgraph...');
-    await service.initialize();
-    console.log('✓ Memgraph connected\n');
+    const report = await service.analyze(resolvedPath, {
+      withGraph: options.withGraph,
+      lang: options.lang,
+      severity: options.severity,
+      exclude: options.exclude?.split(','),
+      maxResults: options.maxResults ? parseInt(options.maxResults, 10) : undefined,
+      useChub: options.useChub,
+    });
 
-    console.log('📁 Indexing project...');
-    await service.indexProject(projectPath);
-    console.log('✓ Project indexed\n');
+    // ── Output ──────────────────────────────────────────────────────────────
+    const fmt = options.output ?? 'table';
 
-    console.log('🔍 Analyzing with Memgraph...\n');
-
-    // Get all deprecated APIs
-    const deprecatedApis = await service.findAllDeprecatedApis();
-
-    if (deprecatedApis.length === 0) {
-      console.log('✓ No deprecated APIs found!\n');
+    if (fmt === 'json') {
+      console.log(JSON.stringify(report, null, 2));
       return;
     }
 
-    // Analyze each API
-    const results = [];
-    for (const api of deprecatedApis) {
-      const context = await service.getDeprecationContext(api.name);
-      results.push({
-        api: api.name,
-        usages: context.totalUsages,
-        files: context.impactedFiles,
-        riskScore: context.riskScore,
-        effort: context.refactoringPath.estimatedEffort,
-        replacement: context.refactoringPath.to,
-      });
+    if (fmt === 'markdown') {
+      printMarkdown(report, resolvedPath);
+      return;
     }
 
-    // Sort by risk score
-    results.sort((a, b) => b.riskScore - a.riskScore);
+    // Default: pretty table
+    printTable(report);
 
-    // Display results
-    console.log('📋 Deprecated APIs Found:\n');
-    results.forEach((result, i) => {
-      const riskColor = result.riskScore > 70 ? '🔴' : result.riskScore > 40 ? '🟡' : '🟢';
-      console.log(`${i + 1}. ${result.api}`);
-      console.log(`   ${riskColor} Risk Score: ${result.riskScore}%`);
-      console.log(`   📊 Usages: ${result.usages} | Files: ${result.files}`);
-      console.log(`   ⏱️  Effort: ${result.effort}`);
-      console.log(`   ✨ Replacement: ${result.replacement}`);
-      console.log();
-    });
-
-    // Generate report
-    const report = await service.generateReport();
-    console.log('📊 Summary:');
-    console.log(`   Total Files: ${report.totalFiles}`);
-    console.log(`   Total Deprecations: ${report.totalDeprecations}`);
-    console.log(`   Files with Issues: ${report.files.length}\n`);
-
-    // Output format
-    if (options.output === 'json') {
-      console.log(JSON.stringify(results, null, 2));
-    }
-
-    await service.shutdown();
-  } catch (error) {
-    console.error('❌ Memgraph analysis failed:', error);
-    await service.shutdown();
+  } catch (err: any) {
+    console.error('❌  Analysis failed:', err?.message ?? err);
     process.exit(1);
   }
 }
 
-async function analyzeWithoutMemgraph(projectPath: string, options: AnalyzeOptions) {
-  console.log('📝 Basic analysis (without Memgraph)\n');
-  console.log('💡 Tip: Use --with-graph for deep analysis with Memgraph\n');
+// ── Pretty table output ───────────────────────────────────────────────────────
 
-  // Simple file scanning
-  const files = findSourceFiles(projectPath);
-  console.log(`Found ${files.length} source files\n`);
-
-  const deprecatedPatterns = [
-    'ChatCompletion.create',
-    'ReactDOM.render',
-    'new Buffer',
-    'CancelToken',
-  ];
-
-  const findings: any[] = [];
-
-  for (const file of files) {
-    try {
-      const content = fs.readFileSync(file, 'utf-8');
-      for (const pattern of deprecatedPatterns) {
-        if (content.includes(pattern)) {
-          const lines = content.split('\n');
-          lines.forEach((line, i) => {
-            if (line.includes(pattern)) {
-              findings.push({
-                file,
-                line: i + 1,
-                pattern,
-                code: line.trim(),
-              });
-            }
-          });
-        }
-      }
-    } catch (error) {
-      // Skip files that can't be read
-    }
-  }
-
-  if (findings.length === 0) {
-    console.log('✓ No deprecated APIs found!\n');
+function printTable(report: AnalysisReport) {
+  if (report.totalFindings === 0) {
+    console.log('✅  No deprecated APIs found! Your codebase looks clean.\n');
+    printSummaryLine(report);
     return;
   }
 
-  console.log('📋 Deprecated APIs Found:\n');
-  findings.forEach((finding, i) => {
-    console.log(`${i + 1}. ${finding.pattern}`);
-    console.log(`   📄 File: ${finding.file}:${finding.line}`);
-    console.log(`   📝 Code: ${finding.code}`);
-    console.log();
-  });
+  for (const file of report.files) {
+    const rel = file.filePath;
+    console.log(`\n── ${rel}  (risk: ${file.riskScore}%)`);
+    console.log('─'.repeat(72));
 
-  if (options.output === 'json') {
-    console.log(JSON.stringify(findings, null, 2));
+    for (const f of file.findings) {
+      const icon = SEVERITY_ICON[f.severity] ?? '⚪';
+      const depth = f.propagationDepth > 0 ? ` [indirect +${f.propagationDepth}]` : '';
+      console.log(`  ${icon} [${f.severity.toUpperCase()}] ${f.title}${depth}`);
+      console.log(`     Line ${f.line}:${f.col}  ${f.snippet}`);
+      console.log(`     💡 ${f.guidance}`);
+      console.log(`     ✨ Replace with: ${f.replacement}`);
+      if (f.docsUrl) console.log(`     📖 ${f.docsUrl}`);
+      if (f.propagationChain.length > 0) {
+        console.log(`     🔗 Chain: ${f.propagationChain.join(' → ')}`);
+      }
+      console.log();
+    }
   }
+
+  printSummaryLine(report);
 }
 
-function findSourceFiles(projectPath: string): string[] {
-  const files: string[] = [];
-  const extensions = ['.ts', '.tsx', '.js', '.jsx'];
-  const excludeDirs = ['node_modules', '.git', 'dist', 'build', 'out'];
+function printSummaryLine(report: AnalysisReport) {
+  console.log('─'.repeat(72));
+  console.log(
+    `📊  Summary  |  Files scanned: ${report.scannedFiles}` +
+    `  |  Findings: ${report.totalFindings}` +
+    `  |  🔴 ${report.criticalCount}  🟠 ${report.highCount}` +
+    `  🟡 ${report.mediumCount}  🔵 ${report.lowCount}` +
+    `  |  ⏱ ${report.durationMs}ms`
+  );
+  console.log();
+}
 
-  const walk = (dir: string) => {
-    try {
-      const entries = fs.readdirSync(dir, { withFileTypes: true });
+// ── Markdown report ───────────────────────────────────────────────────────────
 
-      for (const entry of entries) {
-        if (entry.name.startsWith('.') || excludeDirs.includes(entry.name)) continue;
+function printMarkdown(report: AnalysisReport, scanPath: string) {
+  const lines: string[] = [];
+  lines.push(`# Deprecated API Report`);
+  lines.push(`\n> Scanned: \`${scanPath}\`  |  Files: ${report.scannedFiles}  |  Total findings: ${report.totalFindings}`);
+  lines.push(`\n## Summary\n`);
+  lines.push(`| Severity | Count |`);
+  lines.push(`|----------|-------|`);
+  lines.push(`| 🔴 Critical | ${report.criticalCount} |`);
+  lines.push(`| 🟠 High     | ${report.highCount} |`);
+  lines.push(`| 🟡 Medium   | ${report.mediumCount} |`);
+  lines.push(`| 🔵 Low      | ${report.lowCount} |`);
 
-        const fullPath = path.join(dir, entry.name);
+  for (const file of report.files) {
+    lines.push(`\n---\n`);
+    lines.push(`## \`${file.filePath}\`  — Risk score: ${file.riskScore}%\n`);
+    lines.push(`| # | Severity | Rule | Line | Snippet | Fix |`);
+    lines.push(`|---|----------|------|------|---------|-----|`);
+    file.findings.forEach((f, i) => {
+      const depth = f.propagationDepth > 0 ? ` *(indirect)*` : '';
+      lines.push(`| ${i + 1} | ${SEVERITY_ICON[f.severity]} ${f.severity} | ${f.title}${depth} | ${f.line} | \`${f.snippet.slice(0, 60)}\` | ${f.replacement} |`);
+    });
+  }
 
-        if (entry.isDirectory()) {
-          walk(fullPath);
-        } else if (extensions.some(ext => entry.name.endsWith(ext))) {
-          files.push(fullPath);
-        }
-      }
-    } catch (error) {
-      // Skip directories that can't be read
-    }
-  };
-
-  walk(projectPath);
-  return files;
+  lines.push(`\n---\n_Generated by autochub in ${report.durationMs}ms_\n`);
+  console.log(lines.join('\n'));
 }

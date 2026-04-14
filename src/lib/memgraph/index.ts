@@ -1,5 +1,11 @@
-export { MemgraphService } from './service';
-export { MemgraphClient } from './client';
+export { GraphEngine } from './client';
 export { CodeParser } from './parser';
 export { CodeAnalyzer } from './analyzer';
-export * from './types';
+export { MemgraphService } from './service';
+export { BUILTIN_RULES, langFromExt, rulesForLang } from './rules';
+export type {
+  NodeAttributes, EdgeAttributes, NodeType, EdgeType,
+  DeprecationRule, Severity, Language,
+  Finding, FileReport, AnalysisReport,
+  UsageInfo, DeprecationContext, ImpactReport,
+} from './types';

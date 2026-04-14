@@ -1,13 +1,10 @@
 {
   "name": "autochub-context-hub",
-  "publisher": "autochub",
-  "displayName": "Auto-CHUB Context Hub",
-  "description": "Context-first coding assistant with Memgraph analysis and CLI for detecting and fixing deprecated API calls.",
-  "categories": ["Other"],
-  "private": false,
   "version": "1.0.0",
+  "description": "Lightweight, offline-first CLI to detect and fix deprecated API calls using in-memory graph analysis and Andrew Ng's Context Hub.",
   "author": "Auto-CHUB Team",
   "license": "MIT",
+  "private": false,
   "repository": {
     "type": "git",
     "url": "https://github.com/amanpandadev-dev/autochub-context-hub.git"
@@ -19,206 +16,46 @@
   "keywords": [
     "deprecated-api",
     "code-analysis",
-    "memgraph",
+    "graphology",
     "cli",
     "refactoring",
     "migration",
     "typescript",
-    "javascript"
+    "javascript",
+    "context-hub",
+    "andrew-ng"
   ],
-  "main": "./out/extension-template.js",
   "bin": {
-    "autochub": "./dist/cli/index.js"
+    "autochub": "dist/cli/index.js"
   },
-  "engines": {
-    "vscode": "^1.90.0"
-  },
-  "activationEvents": [
-    "onCommand:autochub.open",
-    "onCommand:autochub.analyzeCurrentFile",
-    "onCommand:autochub.analyzeSelection",
-    "onCommand:autochub.applyAllLatestFixes",
-    "onCommand:autochub.applyLlmFixes",
-    "onCommand:autochub.debugSelection",
-    "onLanguage:typescript",
-    "onLanguage:typescriptreact",
-    "onLanguage:javascript",
-    "onLanguage:javascriptreact",
-    "onLanguage:python",
-    "onLanguage:go",
-    "onLanguage:java",
-    "onLanguage:csharp"
+  "files": [
+    "dist/",
+    "examples/",
+    "README.md",
+    "LICENSE"
   ],
-  "contributes": {
-    "commands": [
-      {
-        "command": "autochub.open",
-        "title": "Open Auto-CHUB Panel",
-        "category": "Auto-CHUB"
-      },
-      {
-        "command": "autochub.analyzeCurrentFile",
-        "title": "Analyze Current File",
-        "category": "Auto-CHUB"
-      },
-      {
-        "command": "autochub.analyzeSelection",
-        "title": "Analyze Selection",
-        "category": "Auto-CHUB"
-      },
-      {
-        "command": "autochub.applyAllLatestFixes",
-        "title": "Apply All Latest Fixes",
-        "category": "Auto-CHUB"
-      },
-      {
-        "command": "autochub.applyLlmFixes",
-        "title": "Apply LLM-Assisted Fixes",
-        "category": "Auto-CHUB"
-      },
-      {
-        "command": "autochub.debugSelection",
-        "title": "Debug Selection",
-        "category": "Auto-CHUB"
-      }
-    ],
-    "configuration": {
-      "title": "Auto-CHUB",
-      "properties": {
-        "autochub.appUrl": {
-          "type": "string",
-          "default": "http://localhost:3000",
-          "description": "URL loaded in the Auto-CHUB webview panel."
-        },
-        "autochub.enableGenericLegacyDetector": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable heuristic detection for likely outdated API calls."
-        },
-        "autochub.useContextHubCli": {
-          "type": "boolean",
-          "default": true,
-          "description": "When enabled, Analyze commands call Context Hub CLI (chub search/get) and derive dynamic deprecation hints."
-        },
-        "autochub.chubBinaryPath": {
-          "type": "string",
-          "default": "chub",
-          "description": "Path to the chub CLI executable."
-        },
-        "autochub.contextHubMaxQueries": {
-          "type": "number",
-          "default": 4,
-          "minimum": 1,
-          "maximum": 10,
-          "description": "Maximum number of inferred queries sent to chub search per analysis."
-        },
-        "autochub.contextHubMaxDocs": {
-          "type": "number",
-          "default": 3,
-          "minimum": 1,
-          "maximum": 10,
-          "description": "Maximum number of Context Hub documents fetched per analysis."
-        },
-        "autochub.enableLlmFixes": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable LLM-assisted code migration command after Context Hub analysis."
-        },
-        "autochub.openRouterApiKey": {
-          "type": "string",
-          "default": "",
-          "description": "OpenRouter API key for LLM-assisted migrations. If empty, uses OPENROUTER_API_KEY from environment or workspace .env."
-        },
-        "autochub.openRouterModel": {
-          "type": "string",
-          "default": "openrouter/auto",
-          "description": "OpenRouter model used by LLM-assisted migrations."
-        },
-        "autochub.openRouterApiUrl": {
-          "type": "string",
-          "default": "https://openrouter.ai/api/v1/chat/completions",
-          "description": "OpenRouter chat completions endpoint URL used by extension-side LLM fixes."
-        },
-        "autochub.llmFixesMaxInputChars": {
-          "type": "number",
-          "default": 80000,
-          "minimum": 8000,
-          "maximum": 140000,
-          "description": "Maximum file size (characters) allowed for one LLM-assisted migration request."
-        },
-        "autochub.genericLegacyMethodNames": {
-          "type": "array",
-          "description": "Method/class identifiers that should be heuristically flagged as potentially outdated.",
-          "default": [
-            "chat.completions.create",
-            "createChatCompletion",
-            "completions.create",
-            "ReactDOM.render",
-            "CancelToken",
-            "new Buffer",
-            "GoogleGenAI",
-            "generateContent"
-          ],
-          "items": {
-            "type": "string"
-          }
-        },
-        "autochub.customOutdatedPatterns": {
-          "type": "array",
-          "description": "Custom regex rules for outdated APIs. Each item can include id, title, pattern, flags, guidance, replacement, quickFixLabel, docsUrl.",
-          "default": [],
-          "items": {
-            "type": "object",
-            "properties": {
-              "id": { "type": "string" },
-              "title": { "type": "string" },
-              "pattern": { "type": "string" },
-              "flags": { "type": "string" },
-              "guidance": { "type": "string" },
-              "replacement": { "type": "string" },
-              "quickFixLabel": { "type": "string" },
-              "docsUrl": { "type": "string" }
-            },
-            "required": ["pattern"]
-          }
-        }
-      }
-    }
-  },
   "scripts": {
-    "dev": "tsx server.ts",
-    "build": "vite build && npm run build:cli",
+    "build": "npm run build:cli",
     "build:cli": "tsc -p tsconfig.cli.json",
-    "build:extension": "tsc -p tsconfig.extension.json",
-    "watch:extension": "tsc -w -p tsconfig.extension.json",
-    "start": "NODE_ENV=production tsx server.ts",
-    "clean": "rm -rf dist out",
-    "lint": "tsc --noEmit",
-    "setup": "npm install && npm run setup:memgraph",
-    "setup:memgraph": "node scripts/setup-memgraph.js"
+    "watch": "tsc -w -p tsconfig.cli.json",
+    "clean": "rm -rf dist",
+    "prebuild": "npm run clean",
+    "lint": "tsc --noEmit -p tsconfig.cli.json",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@tailwindcss/vite": "^4.1.14",
-    "@vitejs/plugin-react": "^5.0.4",
-    "clsx": "^2.1.1",
+    "@aisuite/chub": "^0.1.3",
     "commander": "^11.0.0",
     "dotenv": "^17.2.3",
-    "express": "^4.21.2",
-    "lucide-react": "^0.546.0",
-    "motion": "^12.38.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-markdown": "^10.1.0",
-    "tailwind-merge": "^3.5.0",
-    "vite": "^6.2.0"
+    "graphology": "^0.25.4",
+    "graphology-shortest-path": "^2.1.0",
+    "graphology-traversal": "^0.3.1",
+    "typescript": "~5.8.2"
   },
   "devDependencies": {
-    "@types/express": "^4.17.21",
-    "@types/node": "^22.14.0",
-    "autoprefixer": "^10.4.21",
-    "tailwindcss": "^4.1.14",
-    "tsx": "^4.21.0",
-    "typescript": "~5.8.2",
-    "vite": "^6.2.0"
+    "@types/node": "^22.14.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }

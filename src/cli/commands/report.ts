@@ -1,286 +1,110 @@
-import * as fs from 'fs';
+#!/usr/bin/env node
 import * as path from 'path';
+import * as fs from 'fs';
+import { MemgraphService } from '../../lib/memgraph/service';
+import { BUILTIN_RULES } from '../../lib/memgraph/rules';
 
 interface ReportOptions {
   format?: string;
+  output?: string;
   includeTimeline?: boolean;
   includeMetrics?: boolean;
-  output?: string;
 }
 
 export async function reportCommand(projectPath: string = '.', options: ReportOptions) {
-  try {
-    console.log('\n📊 Auto-CHUB Report Generator\n');
-    console.log(`📁 Analyzing: ${path.resolve(projectPath)}\n`);
+  const resolvedPath = path.resolve(projectPath);
+  const fmt = options.format ?? 'markdown';
 
-    const findings = findDeprecatedPatterns(projectPath);
+  console.log('\n📋  Auto-CHUB Report\n');
+  console.log(`📁  Scanning: ${resolvedPath}`);
+  console.log(`📄  Format: ${fmt}\n`);
 
-    if (findings.length === 0) {
-      console.log('✓ No deprecated APIs found!\n');
-      return;
+  const customRules = MemgraphService.loadConfigRules(resolvedPath);
+  const service = new MemgraphService(customRules);
+
+  const report = await service.analyze(resolvedPath, { withGraph: true });
+
+  let content = '';
+  if (fmt === 'json') {
+    content = JSON.stringify(report, null, 2);
+  } else if (fmt === 'csv') {
+    const rows = ['File,Line,Severity,Rule,Snippet,Replacement'];
+    for (const f of report.files) {
+      for (const finding of f.findings) {
+        rows.push([
+          finding.filePath, finding.line, finding.severity,
+          `"${finding.title}"`, `"${finding.snippet.slice(0, 80)}"`, `"${finding.replacement}"`,
+        ].join(','));
+      }
+    }
+    content = rows.join('\n');
+  } else {
+    // Markdown (default)
+    const lines: string[] = [];
+    lines.push('# Deprecated API Detection Report');
+    lines.push(`\n**Project:** \`${resolvedPath}\``);
+    lines.push(`**Generated:** ${new Date().toISOString()}`);
+    lines.push(`**Engine:** autochub-context-hub (graphology in-memory graph)\n`);
+
+    lines.push('## Executive Summary\n');
+    lines.push(`| Metric | Value |`);
+    lines.push(`|--------|-------|`);
+    lines.push(`| Files Scanned | ${report.scannedFiles} |`);
+    lines.push(`| Total Findings | ${report.totalFindings} |`);
+    lines.push(`| 🔴 Critical | ${report.criticalCount} |`);
+    lines.push(`| 🟠 High | ${report.highCount} |`);
+    lines.push(`| 🟡 Medium | ${report.mediumCount} |`);
+    lines.push(`| 🔵 Low | ${report.lowCount} |`);
+    lines.push(`| Scan Time | ${report.durationMs}ms |`);
+
+    if (options.includeMetrics) {
+      lines.push('\n## Risk Overview\n');
+      lines.push('| File | Risk Score | Findings |');
+      lines.push('|------|-----------|---------|');
+      for (const f of report.files) {
+        lines.push(`| \`${f.filePath}\` | ${f.riskScore}% | ${f.findings.length} |`);
+      }
     }
 
-    // Generate report
-    const report = generateReport(findings, projectPath);
-
-    // Output format
-    const format = options.format || 'html';
-
-    let output = '';
-    switch (format) {
-      case 'json':
-        output = JSON.stringify(report, null, 2);
-        break;
-      case 'markdown':
-        output = generateMarkdownReport(report);
-        break;
-      case 'csv':
-        output = generateCsvReport(report);
-        break;
-      case 'html':
-      default:
-        output = generateHtmlReport(report);
-        break;
+    lines.push('\n## Findings by File\n');
+    for (const file of report.files) {
+      lines.push(`### \`${file.filePath}\` — Risk: ${file.riskScore}%\n`);
+      for (const f of file.findings) {
+        const depth = f.propagationDepth > 0 ? ` _(propagated, depth ${f.propagationDepth})_` : '';
+        lines.push(`#### ${f.title}${depth}`);
+        lines.push(`- **Severity:** ${f.severity}`);
+        lines.push(`- **Line:** ${f.line}`);
+        lines.push(`- **Code:** \`${f.snippet.slice(0, 100)}\``);
+        lines.push(`- **Fix:** ${f.guidance}`);
+        lines.push(`- **Replacement:** \`${f.replacement}\``);
+        if (f.docsUrl) lines.push(`- **Docs:** ${f.docsUrl}`);
+        lines.push('');
+      }
     }
 
-    // Save or display
-    if (options.output) {
-      fs.writeFileSync(options.output, output);
-      console.log(`✓ Report saved to: ${options.output}\n`);
-    } else {
-      console.log(output);
-    }
-  } catch (error) {
-    console.error('❌ Report generation failed:', error);
-    process.exit(1);
-  }
-}
-
-interface Finding {
-  file: string;
-  line: number;
-  pattern: string;
-  code: string;
-}
-
-interface Report {
-  timestamp: string;
-  projectPath: string;
-  totalFindings: number;
-  totalFiles: number;
-  findings: Finding[];
-  summary: Record<string, number>;
-}
-
-function findDeprecatedPatterns(projectPath: string): Finding[] {
-  const files = findSourceFiles(projectPath);
-  const findings: Finding[] = [];
-
-  const deprecatedPatterns = [
-    'ChatCompletion.create',
-    'ReactDOM.render',
-    'new Buffer',
-    'CancelToken',
-  ];
-
-  for (const file of files) {
-    try {
-      const content = fs.readFileSync(file, 'utf-8');
-      const lines = content.split('\n');
-
-      lines.forEach((line, i) => {
-        for (const pattern of deprecatedPatterns) {
-          if (line.includes(pattern)) {
-            findings.push({
-              file,
-              line: i + 1,
-              pattern,
-              code: line.trim(),
-            });
+    if (options.includeTimeline) {
+      lines.push('## Migration Checklist\n');
+      lines.push('Use this checklist to track your migration progress:\n');
+      const seen = new Set<string>();
+      for (const file of report.files) {
+        for (const f of file.findings) {
+          if (!seen.has(f.ruleId)) {
+            seen.add(f.ruleId);
+            lines.push(`- [ ] **${f.title}** → \`${f.replacement}\``);
           }
         }
-      });
-    } catch (error) {
-      // Skip files that can't be read
+      }
     }
+
+    lines.push(`\n---\n_Generated by [autochub-context-hub](https://github.com/amanpandadev-dev/autochub-context-hub)_`);
+    content = lines.join('\n');
   }
 
-  return findings;
-}
-
-function generateReport(findings: Finding[], projectPath: string): Report {
-  const summary: Record<string, number> = {};
-  const uniqueFiles = new Set<string>();
-
-  findings.forEach(f => {
-    summary[f.pattern] = (summary[f.pattern] || 0) + 1;
-    uniqueFiles.add(f.file);
-  });
-
-  return {
-    timestamp: new Date().toISOString(),
-    projectPath,
-    totalFindings: findings.length,
-    totalFiles: uniqueFiles.size,
-    findings,
-    summary,
-  };
-}
-
-function generateHtmlReport(report: Report): string {
-  const rows = report.findings
-    .map(
-      f => `
-    <tr>
-      <td>${f.pattern}</td>
-      <td>${f.file}</td>
-      <td>${f.line}</td>
-      <td><code>${escapeHtml(f.code)}</code></td>
-    </tr>
-  `
-    )
-    .join('');
-
-  const summaryRows = Object.entries(report.summary)
-    .map(
-      ([pattern, count]) => `
-    <tr>
-      <td>${pattern}</td>
-      <td>${count}</td>
-    </tr>
-  `
-    )
-    .join('');
-
-  return `
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Auto-CHUB Deprecation Report</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    h1 { color: #333; }
-    table { border-collapse: collapse; width: 100%; margin: 20px 0; }
-    th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
-    th { background-color: #4CAF50; color: white; }
-    tr:nth-child(even) { background-color: #f2f2f2; }
-    code { background-color: #f4f4f4; padding: 2px 6px; }
-    .summary { background-color: #e8f5e9; padding: 15px; border-radius: 5px; }
-  </style>
-</head>
-<body>
-  <h1>Auto-CHUB Deprecation Report</h1>
-  
-  <div class="summary">
-    <h2>Summary</h2>
-    <p><strong>Generated:</strong> ${report.timestamp}</p>
-    <p><strong>Project:</strong> ${report.projectPath}</p>
-    <p><strong>Total Findings:</strong> ${report.totalFindings}</p>
-    <p><strong>Files Affected:</strong> ${report.totalFiles}</p>
-  </div>
-
-  <h2>Deprecated APIs</h2>
-  <table>
-    <tr>
-      <th>API</th>
-      <th>Count</th>
-    </tr>
-    ${summaryRows}
-  </table>
-
-  <h2>Detailed Findings</h2>
-  <table>
-    <tr>
-      <th>API</th>
-      <th>File</th>
-      <th>Line</th>
-      <th>Code</th>
-    </tr>
-    ${rows}
-  </table>
-</body>
-</html>
-  `;
-}
-
-function generateMarkdownReport(report: Report): string {
-  const rows = report.findings
-    .map(f => `| ${f.pattern} | ${f.file} | ${f.line} | \`${f.code}\` |`)
-    .join('\n');
-
-  const summaryRows = Object.entries(report.summary)
-    .map(([pattern, count]) => `| ${pattern} | ${count} |`)
-    .join('\n');
-
-  return `
-# Auto-CHUB Deprecation Report
-
-## Summary
-
-- **Generated:** ${report.timestamp}
-- **Project:** ${report.projectPath}
-- **Total Findings:** ${report.totalFindings}
-- **Files Affected:** ${report.totalFiles}
-
-## Deprecated APIs
-
-| API | Count |
-|-----|-------|
-${summaryRows}
-
-## Detailed Findings
-
-| API | File | Line | Code |
-|-----|------|------|------|
-${rows}
-  `;
-}
-
-function generateCsvReport(report: Report): string {
-  const header = 'API,File,Line,Code\n';
-  const rows = report.findings
-    .map(f => `"${f.pattern}","${f.file}",${f.line},"${f.code.replace(/"/g, '""')}"`)
-    .join('\n');
-
-  return header + rows;
-}
-
-function findSourceFiles(projectPath: string): string[] {
-  const files: string[] = [];
-  const extensions = ['.ts', '.tsx', '.js', '.jsx'];
-  const excludeDirs = ['node_modules', '.git', 'dist', 'build', 'out'];
-
-  const walk = (dir: string) => {
-    try {
-      const entries = fs.readdirSync(dir, { withFileTypes: true });
-
-      for (const entry of entries) {
-        if (entry.name.startsWith('.') || excludeDirs.includes(entry.name)) continue;
-
-        const fullPath = path.join(dir, entry.name);
-
-        if (entry.isDirectory()) {
-          walk(fullPath);
-        } else if (extensions.some(ext => entry.name.endsWith(ext))) {
-          files.push(fullPath);
-        }
-      }
-    } catch (error) {
-      // Skip directories that can't be read
-    }
-  };
-
-  walk(projectPath);
-  return files;
-}
-
-function escapeHtml(text: string): string {
-  const map: Record<string, string> = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#039;',
-  };
-  return text.replace(/[&<>"']/g, m => map[m]);
+  if (options.output) {
+    const outPath = path.resolve(options.output);
+    fs.writeFileSync(outPath, content);
+    console.log(`✅  Report saved to: ${outPath}\n`);
+  } else {
+    console.log(content);
+  }
 }

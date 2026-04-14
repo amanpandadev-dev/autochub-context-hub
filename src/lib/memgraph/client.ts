@@ -1,158 +1,121 @@
-import { CodeNode, CodeRelationship, UsageInfo } from './types';
+import Graph from 'graphology';
+import { NodeAttributes, EdgeAttributes, EdgeType, NodeType } from './types';
 
-export class MemgraphClient {
-  private connected = false;
-  private client: any;
+/**
+ * In-memory graph engine powered by graphology.
+ * Replaces the Memgraph/neo4j-driver dependency — no server or Docker required.
+ * API is intentionally kept close to what the Memgraph client exposed so the
+ * rest of the layer needs minimal changes.
+ */
+export class GraphEngine {
+  public graph: Graph<NodeAttributes, EdgeAttributes>;
+  private nodeIndex = 0;
 
-  constructor(
-    private host: string = 'localhost',
-    private port: number = 7687
-  ) {}
+  constructor() {
+    this.graph = new Graph({ multi: true, type: 'directed' });
+  }
 
-  async connect(): Promise<void> {
-    try {
-      // Lazy load memgraph client
-      const { Client } = await import('memgraph');
-      this.client = new Client({
-        host: this.host,
-        port: this.port,
-        username: 'memgraph',
-        password: 'memgraph',
-      });
-      await this.client.connect();
-      this.connected = true;
-      console.log('[Memgraph] Connected successfully');
-    } catch (error) {
-      console.error('[Memgraph] Connection failed:', error);
-      throw error;
+  /** Reset the graph (e.g. before re-indexing a project) */
+  clear(): void {
+    this.graph.clear();
+    this.nodeIndex = 0;
+  }
+
+  // ── Node helpers ───────────────────────────────────────────────────────────
+
+  /** Returns a stable node key from type + name + path */
+  private nodeKey(type: NodeType, name: string, path?: string): string {
+    return `${type}::${path ?? ''}::${name}`;
+  }
+
+  /** Add or retrieve a node; returns the node key */
+  addNode(type: NodeType, name: string, extra: Partial<NodeAttributes> = {}): string {
+    const key = this.nodeKey(type, name, extra.path);
+    if (!this.graph.hasNode(key)) {
+      this.graph.addNode(key, { type, name, ...extra });
+    }
+    return key;
+  }
+
+  /** Add a directed edge between two node keys (skips duplicates) */
+  addEdge(fromKey: string, toKey: string, type: EdgeType, extra: Partial<EdgeAttributes> = {}): void {
+    // Avoid duplicate edges of the same type between the same pair
+    const existing = this.graph.edges(fromKey, toKey).find(e => this.graph.getEdgeAttribute(e, 'type') === type);
+    if (!existing) {
+      this.graph.addDirectedEdge(fromKey, toKey, { type, ...extra });
     }
   }
 
-  async disconnect(): Promise<void> {
-    if (this.connected && this.client) {
-      await this.client.disconnect();
-      this.connected = false;
-    }
+  hasNode(key: string): boolean {
+    return this.graph.hasNode(key);
   }
 
-  async isConnected(): Promise<boolean> {
-    if (!this.connected) return false;
-    try {
-      await this.client.execute('RETURN 1');
-      return true;
-    } catch {
-      return false;
-    }
+  getNodeAttr(key: string): NodeAttributes {
+    return this.graph.getNodeAttributes(key);
   }
 
-  async createSchema(): Promise<void> {
-    const queries = [
-      'CREATE INDEX ON :File(path)',
-      'CREATE INDEX ON :Function(name)',
-      'CREATE INDEX ON :Class(name)',
-      'CREATE INDEX ON :DeprecatedAPI(name)',
-    ];
-
-    for (const query of queries) {
-      try {
-        await this.client.execute(query);
-      } catch {
-        // Index might already exist
-      }
-    }
-  }
-
-  async clearDatabase(): Promise<void> {
-    await this.client.execute('MATCH (n) DETACH DELETE n');
-  }
-
-  async execute(query: string, params?: Record<string, any>): Promise<any[]> {
-    try {
-      const result = await this.client.execute(query, params);
-      return result;
-    } catch (error) {
-      console.error('[Memgraph] Query failed:', error);
-      throw error;
-    }
-  }
-
-  async addNode(node: CodeNode): Promise<void> {
-    const query = `
-      CREATE (n:${node.type.toUpperCase()} {
-        name: $name,
-        path: $path,
-        line: $line,
-        metadata: $metadata
-      })
-    `;
-
-    await this.execute(query, {
-      name: node.name,
-      path: node.path || '',
-      line: node.line || 0,
-      metadata: JSON.stringify(node.metadata || {}),
+  /** Get all nodes of a specific type */
+  nodesOfType(type: NodeType): string[] {
+    const result: string[] = [];
+    this.graph.forEachNode((key, attrs) => {
+      if (attrs.type === type) result.push(key);
     });
+    return result;
   }
 
-  async addRelationship(rel: CodeRelationship): Promise<void> {
-    const query = `
-      MATCH (from {name: $fromName}), (to {name: $toName})
-      CREATE (from)-[:${rel.type}]->(to)
-    `;
+  /** Get all nodes that have an outgoing edge of `edgeType` to `targetKey` */
+  predecessorsViaEdge(targetKey: string, edgeType: EdgeType): string[] {
+    const result: string[] = [];
+    this.graph.forEachInEdge(targetKey, (edge, attrs, source) => {
+      if (attrs.type === edgeType) result.push(source);
+    });
+    return result;
+  }
 
-    try {
-      await this.execute(query, {
-        fromName: rel.from.name,
-        toName: rel.to.name,
+  /** Get all nodes that `sourceKey` points to via `edgeType` */
+  successorsViaEdge(sourceKey: string, edgeType: EdgeType): string[] {
+    const result: string[] = [];
+    this.graph.forEachOutEdge(sourceKey, (edge, attrs, _src, target) => {
+      if (attrs.type === edgeType) result.push(target);
+    });
+    return result;
+  }
+
+  /**
+   * BFS from `startKey` following `edgeType` edges.
+   * Returns an array of { key, depth, path } for each reachable node.
+   */
+  bfs(
+    startKey: string,
+    edgeType: EdgeType,
+    maxDepth = 5
+  ): Array<{ key: string; depth: number; chain: string[] }> {
+    const visited = new Set<string>();
+    const queue: Array<{ key: string; depth: number; chain: string[] }> = [
+      { key: startKey, depth: 0, chain: [startKey] },
+    ];
+    const results: Array<{ key: string; depth: number; chain: string[] }> = [];
+
+    while (queue.length > 0) {
+      const current = queue.shift()!;
+      if (visited.has(current.key)) continue;
+      visited.add(current.key);
+
+      if (current.depth > 0) results.push(current);
+      if (current.depth >= maxDepth) continue;
+
+      // Traverse in reverse (callers of current node)
+      this.graph.forEachInEdge(current.key, (edge, attrs, source) => {
+        if (attrs.type === edgeType && !visited.has(source)) {
+          queue.push({
+            key: source,
+            depth: current.depth + 1,
+            chain: [...current.chain, source],
+          });
+        }
       });
-    } catch {
-      // Relationship might already exist
     }
-  }
 
-  async findDeprecatedUsages(apiName: string): Promise<UsageInfo[]> {
-    const query = `
-      MATCH (api:DEPRECATEDAPI {name: $apiName})<-[:USES]-(func:FUNCTION)<-[:DEFINES]-(file:FILE)
-      RETURN func.name as functionName, file.path as filePath, func.line as lineNumber
-    `;
-
-    try {
-      const results = await this.execute(query, { apiName });
-      return results.map(r => ({
-        functionName: r.functionName,
-        filePath: r.filePath,
-        lineNumber: r.lineNumber,
-      }));
-    } catch {
-      return [];
-    }
-  }
-
-  async findImpactedFiles(apiName: string): Promise<string[]> {
-    const query = `
-      MATCH (api:DEPRECATEDAPI {name: $apiName})<-[:USES]-(func:FUNCTION)<-[:DEFINES]-(file:FILE)
-      RETURN DISTINCT file.path as filePath
-    `;
-
-    try {
-      const results = await this.execute(query, { apiName });
-      return results.map(r => r.filePath);
-    } catch {
-      return [];
-    }
-  }
-
-  async findDependencyChain(fromFile: string, toFile: string): Promise<string[][]> {
-    const query = `
-      MATCH path = (from:FILE {path: $fromFile})-[:DEPENDS_ON*]->(to:FILE {path: $toFile})
-      RETURN [node IN nodes(path) | node.path] as chain
-    `;
-
-    try {
-      const results = await this.execute(query, { fromFile, toFile });
-      return results.map(r => r.chain);
-    } catch {
-      return [];
-    }
+    return results;
   }
 }

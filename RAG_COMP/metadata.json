@@ -1,5 +1,0 @@
-{
-  "name": "RAG Response Comparator",
-  "description": "Compare Legacy, AI-Assisted, and CHUB-based RAG paradigms with side-by-side analysis and GitHub-driven retrieval.",
-  "requestFramePermissions": []
-}

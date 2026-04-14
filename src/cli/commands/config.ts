@@ -1,146 +1,79 @@
-import * as fs from 'fs';
+#!/usr/bin/env node
 import * as path from 'path';
+import * as fs from 'fs';
 
-const CONFIG_FILE = path.join(process.cwd(), '.autochubrc.json');
+const CONFIG_FILE = '.autochub.json';
 
-interface Config {
-  memgraph?: {
-    host?: string;
-    port?: number;
-    username?: string;
-    password?: string;
-  };
-  analysis?: {
-    excludeDirs?: string[];
-    extensions?: string[];
-  };
-  output?: {
-    format?: string;
-    directory?: string;
-  };
+const DEFAULT_CONFIG = {
+  version: '1.0.0',
+  rules: [],
+  options: {
+    exclude: ['node_modules', 'dist', 'build', '.git', 'venv', 'env', '__pycache__'],
+    severity: 'low',
+    maxResults: 100,
+  },
+};
+
+export async function initCommand(projectPath: string = '.') {
+  const resolvedPath = path.resolve(projectPath);
+  const configPath = path.join(resolvedPath, CONFIG_FILE);
+
+  console.log('\n🚀  Auto-CHUB Init\n');
+
+  if (fs.existsSync(configPath)) {
+    console.log(`⚠️  Config already exists at: ${configPath}`);
+    console.log('    Delete it and re-run to reset, or edit it directly.\n');
+    return;
+  }
+
+  fs.writeFileSync(configPath, JSON.stringify(DEFAULT_CONFIG, null, 2) + '\n');
+
+  console.log(`✅  Created: ${configPath}\n`);
+  console.log('You can now:');
+  console.log('  • Add custom rules to the "rules" array in .autochub.json');
+  console.log('  • Run:  autochub analyze .            (fast regex scan)');
+  console.log('  • Run:  autochub analyze . --with-graph  (deep graph propagation)');
+  console.log('  • Run:  autochub analyze . --use-chub    (enrich with Context Hub docs)');
+  console.log('  • Run:  autochub sync --chub             (pull new rules from Context Hub)');
+  console.log('  • Run:  autochub report . --format markdown --output REPORT.md');
+  console.log('  • Run:  autochub rules               (list all built-in rules)\n');
 }
 
 export async function configCommand(action?: string, key?: string, value?: string) {
-  try {
-    const config = loadConfig();
+  const configPath = path.resolve(CONFIG_FILE);
 
-    switch (action) {
-      case 'get':
-        handleGet(config, key);
-        break;
-      case 'set':
-        handleSet(config, key, value);
-        break;
-      case 'list':
-        handleList(config);
-        break;
-      case 'reset':
-        handleReset();
-        break;
-      default:
-        handleList(config);
+  if (!action || action === 'show') {
+    if (!fs.existsSync(configPath)) {
+      console.log('ℹ️  No .autochub.json found. Run: autochub init\n');
+      return;
     }
-  } catch (error) {
-    console.error('❌ Config command failed:', error);
-    process.exit(1);
-  }
-}
-
-function loadConfig(): Config {
-  if (fs.existsSync(CONFIG_FILE)) {
-    const content = fs.readFileSync(CONFIG_FILE, 'utf-8');
-    return JSON.parse(content);
-  }
-  return {};
-}
-
-function saveConfig(config: Config) {
-  fs.writeFileSync(CONFIG_FILE, JSON.stringify(config, null, 2));
-  console.log(`✓ Configuration saved to ${CONFIG_FILE}\n`);
-}
-
-function handleGet(config: Config, key?: string) {
-  if (!key) {
-    console.log('❌ Please specify a key\n');
-    console.log('Usage: autochub config get <key>\n');
-    console.log('Available keys:');
-    console.log('  memgraph.host');
-    console.log('  memgraph.port');
-    console.log('  memgraph.username');
-    console.log('  memgraph.password');
-    console.log('  analysis.excludeDirs');
-    console.log('  analysis.extensions');
-    console.log('  output.format');
-    console.log('  output.directory\n');
+    console.log('\n📄  .autochub.json\n');
+    console.log(fs.readFileSync(configPath, 'utf-8'));
     return;
   }
 
-  const keys = key.split('.');
-  let value: any = config;
-
-  for (const k of keys) {
-    value = value?.[k];
-  }
-
-  if (value === undefined) {
-    console.log(`❌ Key not found: ${key}\n`);
-  } else {
-    console.log(`${key}: ${JSON.stringify(value)}\n`);
-  }
-}
-
-function handleSet(config: Config, key?: string, value?: string) {
-  if (!key || !value) {
-    console.log('❌ Please specify key and value\n');
-    console.log('Usage: autochub config set <key> <value>\n');
-    return;
-  }
-
-  const keys = key.split('.');
-  let current: any = config;
-
-  for (let i = 0; i < keys.length - 1; i++) {
-    const k = keys[i];
-    if (!current[k]) {
-      current[k] = {};
+  if (action === 'set' && key && value) {
+    let config = DEFAULT_CONFIG;
+    if (fs.existsSync(configPath)) {
+      config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
     }
-    current = current[k];
-  }
-
-  const lastKey = keys[keys.length - 1];
-  current[lastKey] = parseValue(value);
-
-  saveConfig(config);
-  console.log(`✓ Set ${key} = ${value}\n`);
-}
-
-function handleList(config: Config) {
-  console.log('\n📋 Current Configuration:\n');
-
-  if (Object.keys(config).length === 0) {
-    console.log('No configuration set. Use: autochub config set <key> <value>\n');
+    const keys = key.split('.');
+    let obj: any = config;
+    for (let i = 0; i < keys.length - 1; i++) {
+      if (!obj[keys[i]]) obj[keys[i]] = {};
+      obj = obj[keys[i]];
+    }
+    obj[keys[keys.length - 1]] = value;
+    fs.writeFileSync(configPath, JSON.stringify(config, null, 2) + '\n');
+    console.log(`✅  Set ${key} = ${value}`);
     return;
   }
 
-  console.log(JSON.stringify(config, null, 2));
-  console.log();
-}
-
-function handleReset() {
-  if (fs.existsSync(CONFIG_FILE)) {
-    fs.unlinkSync(CONFIG_FILE);
-    console.log(`✓ Configuration reset\n`);
-  } else {
-    console.log('No configuration file found\n');
+  if (action === 'reset') {
+    fs.writeFileSync(configPath, JSON.stringify(DEFAULT_CONFIG, null, 2) + '\n');
+    console.log('✅  Config reset to defaults.');
+    return;
   }
-}
 
-function parseValue(value: string): any {
-  // Try to parse as JSON
-  try {
-    return JSON.parse(value);
-  } catch {
-    // Return as string
-    return value;
-  }
+  console.log('Usage: autochub config [show|set <key> <value>|reset]');
 }
