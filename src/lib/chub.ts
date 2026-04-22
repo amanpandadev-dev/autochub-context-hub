@@ -5,8 +5,14 @@ import * as fs from 'fs';
 export interface ChubDoc {
   id: string;
   name: string;
-  description: string;
+  description?: string;
   content?: string;
+  docsUrl?: string;
+  localPath?: string;
+  deprecatedMethods?: string[];
+  replacementHints?: string[];
+  source?: 'github' | 'chub' | 'local';
+  metadata?: Record<string, unknown>;
 }
 
 /**

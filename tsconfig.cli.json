@@ -20,6 +20,6 @@
     "noImplicitAny": false,
     "strict": false
   },
-  "include": ["src/cli/**/*.ts", "src/lib/**/*.ts"],
+  "include": ["src/cli/**/*.ts", "src/lib/**/*.ts", "src/test/**/*.ts"],
   "exclude": ["node_modules", "dist", "out", "examples", "src/lib/openrouter.ts", "src/lib/utils.ts"]
 }

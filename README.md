@@ -57,6 +57,7 @@ autochub sync --chub
 | `fix [path]` | Apply safe automatic replacements. |
 | `report [path]` | Generate a formal migration report (Markdown/JSON/CSV). |
 | `rules` | List all 30+ built-in deprecation patterns. |
+| `cmd [command]` | Explain available commands, use cases, and examples. |
 | `sync` | Update your rules from remote sources or Context Hub. |
 | `init` | Setup the project configuration. |
 

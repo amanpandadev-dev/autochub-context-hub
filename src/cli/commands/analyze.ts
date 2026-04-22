@@ -3,6 +3,8 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { MemgraphService } from '../../lib/memgraph/service';
 import { AnalysisReport, Finding, Severity } from '../../lib/memgraph/types';
+import { spawn } from 'child_process';
+import { GithubCache } from '../../lib/github/cache';
 
 interface AnalyzeOptions {
   withGraph?: boolean;
@@ -24,11 +26,33 @@ const SEVERITY_ICON: Record<Severity, string> = {
 
 export async function analyzeCommand(projectPath: string = '.', options: AnalyzeOptions) {
   const resolvedPath = path.resolve(projectPath);
-  console.log('\n📊  Auto-CHUB Analyzer\n');
-  console.log(`📁  Scanning: ${resolvedPath}`);
-  if (options.withGraph) console.log('🔗  Graph propagation: enabled');
-  if (options.severity)  console.log(`🎯  Severity filter: ${options.severity}`);
-  console.log();
+  const fmt = options.output ?? 'table';
+
+  if (fmt !== 'json') {
+    console.log('\n📊  Auto-CHUB Analyzer\n');
+    console.log(`📁  Scanning: ${resolvedPath}`);
+    if (options.withGraph) console.log('🔗  Graph propagation: enabled');
+    if (options.severity)  console.log(`🎯  Severity filter: ${options.severity}`);
+    console.log();
+  }
+
+  // Background sync check
+  try {
+    const cache = new GithubCache();
+    if (cache.isCacheExpired()) {
+      const child = spawn(process.argv[0], [process.argv[1], 'sync', '--github', '--bg'], {
+        detached: true,
+        stdio: 'ignore'
+      });
+      child.unref();
+      // Only notify if not outputting json
+      if (options.output !== 'json') {
+         console.log('🔄  [Background] Refreshing offline GitHub docs cache natively...');
+      }
+    }
+  } catch (e) {
+    // Ignore cache errors in background trigger
+  }
 
   // Load custom rules from file if provided
   const configRules = MemgraphService.loadConfigRules(resolvedPath);
@@ -56,8 +80,6 @@ export async function analyzeCommand(projectPath: string = '.', options: Analyze
     });
 
     // ── Output ──────────────────────────────────────────────────────────────
-    const fmt = options.output ?? 'table';
-
     if (fmt === 'json') {
       console.log(JSON.stringify(report, null, 2));
       return;
@@ -99,6 +121,7 @@ function printTable(report: AnalysisReport) {
       console.log(`     💡 ${f.guidance}`);
       console.log(`     ✨ Replace with: ${f.replacement}`);
       if (f.docsUrl) console.log(`     📖 ${f.docsUrl}`);
+      if (f.localDocPath) console.log(`     💾 Local doc: ${f.localDocPath}`);
       if (f.propagationChain.length > 0) {
         console.log(`     🔗 Chain: ${f.propagationChain.join(' → ')}`);
       }

@@ -38,9 +38,10 @@
     "build": "npm run build:cli",
     "build:cli": "tsc -p tsconfig.cli.json",
     "watch": "tsc -w -p tsconfig.cli.json",
-    "clean": "rm -rf dist",
+    "clean": "node -e \"fs.rmSync('dist', {recursive:true, force:true})\"",
     "prebuild": "npm run clean",
     "lint": "tsc --noEmit -p tsconfig.cli.json",
+    "test": "npm run build && node dist/test/github/doc-extraction.test.js",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {

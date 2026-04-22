@@ -6,6 +6,9 @@ import { fixCommand } from './commands/fix';
 import { reportCommand } from './commands/report';
 import { configCommand, initCommand } from './commands/config';
 import { rulesCommand } from './commands/rules';
+import { syncCommand } from './commands/sync';
+import { cacheHealthCommand } from './commands/cache-health';
+import { cmdCommand } from './commands/cmd';
 
 const program = new Command();
 
@@ -60,6 +63,28 @@ program
   .option('--severity <level>', 'Filter by severity: critical, high, medium, low')
   .option('--lang <language>', 'Filter by language: ts, js, py, java, go, cs')
   .action(rulesCommand);
+
+// ── sync ──────────────────────────────────────────────────────────────────────
+program
+  .command('sync')
+  .description('Synchronize offline document caches and rules (e.g. from GitHub or CHUB)')
+  .option('--github [repo]', 'Pull rules and docs from GitHub (format: owner/repo@branch)')
+  .option('--chub', 'Scan Context Hub locally for deprecated docs')
+  .option('--bg', 'Run sync silently (used internally for background polling)')
+  .action(syncCommand);
+
+// —— cache-health —————————————————————————————————————————————————————————————————————————————————————
+program
+  .command('cache-health')
+  .description('Show offline cache health for CHUB GitHub docs')
+  .option('--output <format>', 'Output format: table (default), json', 'table')
+  .option('--max-age-hours <number>', 'Freshness window in hours (default 24)', '24')
+  .action(cacheHealthCommand);
+
+program
+  .command('cmd [command]')
+  .description('Explain available Auto-CHUB commands and their use cases')
+  .action(cmdCommand);
 
 // ── config ────────────────────────────────────────────────────────────────────
 program

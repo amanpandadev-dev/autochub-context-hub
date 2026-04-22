@@ -312,6 +312,54 @@ export const BUILTIN_RULES: DeprecationRule[] = [
     guidance: 'Use DOM manipulation methods like createElement and appendChild.',
     replacement: 'appendChild()',
   },
+
+  // ── LangChain ─────────────────────────────────────────────────────────────
+  {
+    id: 'langchain/llms-deprecated',
+    title: 'langchain.llms is deprecated in v0.2',
+    pattern: "from\\s+langchain\\.llms|import\\s+.*\\s+from\\s+['\"]langchain\\/llms['\"]",
+    severity: 'high',
+    languages: ['py', 'ts', 'js'],
+    guidance: 'Use langchain-openai, langchain-anthropic, etc. or langchain_community.llms.',
+    replacement: 'langchain_openai.llms',
+    docsUrl: 'https://python.langchain.com/v0.2/docs/how_to/migration/',
+  },
+  {
+    id: 'langchain/chat-models-deprecated',
+    title: 'langchain.chat_models is deprecated in v0.2',
+    pattern: "from\\s+langchain\\.chat_models|import\\s+.*\\s+from\\s+['\"]langchain\\/chat_models['\"]",
+    severity: 'high',
+    languages: ['py', 'ts', 'js'],
+    guidance: 'Use langchain_openai.ChatOpenAI or similar provider-specific packages.',
+    replacement: 'langchain_openai.ChatOpenAI',
+  },
+  {
+    id: 'langchain/run-deprecated',
+    title: 'chain.run() is deprecated',
+    pattern: '\\.run\\s*\\(',
+    severity: 'medium',
+    languages: ['py', 'ts', 'js'],
+    guidance: 'Use .invoke() instead of .run().',
+    replacement: '.invoke()',
+  },
+  {
+    id: 'langchain/predict-deprecated',
+    title: 'chain.predict() is deprecated',
+    pattern: '\\.predict\\s*\\(',
+    severity: 'medium',
+    languages: ['py', 'ts', 'js'],
+    guidance: 'Use .invoke() for a consistent interface across all Runnables.',
+    replacement: '.invoke()',
+  },
+  {
+    id: 'langchain/llm-chain-deprecated',
+    title: 'LLMChain is legacy',
+    pattern: '\\bLLMChain\\b',
+    severity: 'medium',
+    languages: ['py', 'ts', 'js'],
+    guidance: 'Use LCEL (LangChain Expression Language) chains instead.',
+    replacement: 'prompt | llm',
+  },
 ];
 
 /**

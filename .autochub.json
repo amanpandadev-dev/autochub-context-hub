@@ -1,0 +1,1420 @@
+{
+  "rules": [
+    {
+      "id": "github/accelerate/package/accelerator-device",
+      "title": "accelerator.device is deprecated",
+      "pattern": "accelerator\\.device",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Hugging Face Accelerate for distributed PyTorch training and inference in Python",
+      "replacement": "accelerator.device",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/accelerate/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/accelerate/package/prepare",
+      "title": "prepare() is deprecated",
+      "pattern": "\\bprepare\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Hugging Face Accelerate for distributed PyTorch training and inference in Python",
+      "replacement": "accelerator.device",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/accelerate/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/accelerate/package/accelerator-prepare",
+      "title": "accelerator.prepare( is deprecated",
+      "pattern": "accelerator\\.prepare\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Hugging Face Accelerate for distributed PyTorch training and inference in Python",
+      "replacement": "accelerator.device",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/accelerate/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/accelerate/package/loss-backward",
+      "title": "loss.backward() is deprecated",
+      "pattern": "loss\\.backward\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Hugging Face Accelerate for distributed PyTorch training and inference in Python",
+      "replacement": "accelerator.device",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/accelerate/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/accelerate/package/accelerator-backward",
+      "title": "accelerator.backward( is deprecated",
+      "pattern": "accelerator\\.backward\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Hugging Face Accelerate for distributed PyTorch training and inference in Python",
+      "replacement": "accelerator.device",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/accelerate/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/accelerate/package/gather-for-metrics",
+      "title": "gather_for_metrics() is deprecated",
+      "pattern": "\\bgather_for_metrics\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Hugging Face Accelerate for distributed PyTorch training and inference in Python",
+      "replacement": "accelerator.device",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/accelerate/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/accelerate/package/save-state",
+      "title": "save_state() is deprecated",
+      "pattern": "\\bsave_state\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Hugging Face Accelerate for distributed PyTorch training and inference in Python",
+      "replacement": "accelerator.device",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/accelerate/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/accelerate/package/accelerator-end-training",
+      "title": "accelerator.end_training() is deprecated",
+      "pattern": "accelerator\\.end_training\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Hugging Face Accelerate for distributed PyTorch training and inference in Python",
+      "replacement": "accelerator.device",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/accelerate/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/aiofiles/package/aiofiles-threadpool-sync-open",
+      "title": "aiofiles.threadpool.sync_open is deprecated",
+      "pattern": "aiofiles\\.threadpool\\.sync_open",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "aiofiles package guide for asyncio-friendly local file I/O in Python",
+      "replacement": "aiofiles.threadpool.sync_open",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aiofiles/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/aiofiles/package/aiofiles-open",
+      "title": "aiofiles.open() is deprecated",
+      "pattern": "aiofiles\\.open\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "aiofiles package guide for asyncio-friendly local file I/O in Python",
+      "replacement": "aiofiles.threadpool.sync_open",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aiofiles/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/aiohttp-cors/package/app-router-add-route",
+      "title": "app.router.add_route( is deprecated",
+      "pattern": "app\\.router\\.add_route\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "aiohttp-cors package guide for adding CORS policies to aiohttp.web apps",
+      "replacement": "app.router.add_route(",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aiohttp-cors/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/aiohttp/cors/app-router-add-route",
+      "title": "app.router.add_route( is deprecated",
+      "pattern": "app\\.router\\.add_route\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "aiohttp-cors package guide for adding CORS policies to aiohttp.web apps",
+      "replacement": "app.router.add_route(",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aiohttp/docs/cors/python/DOC.md"
+    },
+    {
+      "id": "github/aiomysql/package/aiomysql-dictcursor",
+      "title": "aiomysql.DictCursor is deprecated",
+      "pattern": "aiomysql\\.DictCursor",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "aiomysql package guide for asyncio-based MySQL and MariaDB access in Python",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aiomysql/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/aiomysql/package/ssl-sslcontext",
+      "title": "ssl.SSLContext is deprecated",
+      "pattern": "ssl\\.SSLContext",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "aiomysql package guide for asyncio-based MySQL and MariaDB access in Python",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aiomysql/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/albumentations/package/a-compose",
+      "title": "A.Compose( is deprecated",
+      "pattern": "A\\.Compose\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Albumentations image augmentation library for Python computer vision pipelines",
+      "replacement": "A.Compose(",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/albumentations/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/albumentations/package/cv2-border-constant",
+      "title": "cv2.BORDER_CONSTANT is deprecated",
+      "pattern": "cv2\\.BORDER_CONSTANT",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Albumentations image augmentation library for Python computer vision pipelines",
+      "replacement": "A.Compose(",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/albumentations/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/alembic/package/sqlalchemy-url",
+      "title": "sqlalchemy.url is deprecated",
+      "pattern": "sqlalchemy\\.url",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Alembic package guide for Python database schema migrations with SQLAlchemy",
+      "replacement": "sqlalchemy.url",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/alembic/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/alembic/package/env-py",
+      "title": "env.py is deprecated",
+      "pattern": "env\\.py",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Alembic package guide for Python database schema migrations with SQLAlchemy",
+      "replacement": "sqlalchemy.url",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/alembic/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/altair/package/alt-renderers-enable",
+      "title": "alt.renderers.enable( is deprecated",
+      "pattern": "alt\\.renderers\\.enable\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Altair Python package guide for declarative charts with Vega-Lite 6",
+      "replacement": "alt.renderers.enable(",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/altair/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/altair/package/chart-html",
+      "title": "chart.html is deprecated",
+      "pattern": "chart\\.html",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Altair Python package guide for declarative charts with Vega-Lite 6",
+      "replacement": "alt.renderers.enable(",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/altair/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/anthropic/claude-api/deprecated-models-items",
+      "title": "DEPRECATED_MODELS.items() is deprecated",
+      "pattern": "DEPRECATED_MODELS\\.items\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Claude AI assistant API for text generation, analysis, conversation, streaming, tool use, vision, and batch processing",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/anthropic/docs/claude-api/python/DOC.md"
+    },
+    {
+      "id": "github/anthropic/package/client-messages-create",
+      "title": "client.messages.create( is deprecated",
+      "pattern": "client\\.messages\\.create\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Anthropic Python package guide for the Claude SDK: install, auth, messages, streaming, async, tools, and runtime configuration",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/anthropic/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/anthropic/package/message-content",
+      "title": "message.content is deprecated",
+      "pattern": "message\\.content",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Anthropic Python package guide for the Claude SDK: install, auth, messages, streaming, async, tools, and runtime configuration",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/anthropic/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/anthropic/package/client-messages-stream",
+      "title": "client.messages.stream( is deprecated",
+      "pattern": "client\\.messages\\.stream\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Anthropic Python package guide for the Claude SDK: install, auth, messages, streaming, async, tools, and runtime configuration",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/anthropic/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/anthropic/package/client-messages-with-streaming-response-create",
+      "title": "client.messages.with_streaming_response.create( is deprecated",
+      "pattern": "client\\.messages\\.with_streaming_response\\.create\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Anthropic Python package guide for the Claude SDK: install, auth, messages, streaming, async, tools, and runtime configuration",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/anthropic/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/anthropic/package/client-beta",
+      "title": "client.beta is deprecated",
+      "pattern": "client\\.beta",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Anthropic Python package guide for the Claude SDK: install, auth, messages, streaming, async, tools, and runtime configuration",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/anthropic/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/anyio/package/anyio-run",
+      "title": "anyio.run() is deprecated",
+      "pattern": "anyio\\.run\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "AnyIO package guide for Python structured concurrency across asyncio and Trio",
+      "replacement": "anyio.run()",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/anyio/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/anyio/package/to-thread-run-sync",
+      "title": "to_thread.run_sync() is deprecated",
+      "pattern": "to_thread\\.run_sync\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "AnyIO package guide for Python structured concurrency across asyncio and Trio",
+      "replacement": "anyio.run()",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/anyio/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/apache-airflow/package/airflow-sdk",
+      "title": "airflow.sdk is deprecated",
+      "pattern": "airflow\\.sdk",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Apache Airflow workflow orchestration platform for authoring, scheduling, and monitoring Python-defined workflows",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/apache-airflow/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/apache-airflow/providers-cloudant/db",
+      "title": "db() is deprecated",
+      "pattern": "\\bdb\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Apache Airflow IBM Cloudant provider for Cloudant connections and hook-based database operations from DAG tasks",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/apache-airflow/docs/providers-cloudant/python/DOC.md"
+    },
+    {
+      "id": "github/apache-airflow/providers-cohere/coherehook-test-connection",
+      "title": "CohereHook.test_connection() is deprecated",
+      "pattern": "CohereHook\\.test_connection\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Apache Airflow Cohere provider for generating embeddings with Airflow operators and hooks",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/apache-airflow/docs/providers-cohere/python/DOC.md"
+    },
+    {
+      "id": "github/apache-airflow/providers-common-io/airflow-sdk",
+      "title": "airflow.sdk is deprecated",
+      "pattern": "airflow\\.sdk",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Apache Airflow common.io provider for cross-filesystem transfers and object-store-backed XComs",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/apache-airflow/docs/providers-common-io/python/DOC.md"
+    },
+    {
+      "id": "github/apache-airflow/providers-common-io/airflow-io-path",
+      "title": "airflow.io.path is deprecated",
+      "pattern": "airflow\\.io\\.path",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Apache Airflow common.io provider for cross-filesystem transfers and object-store-backed XComs",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/apache-airflow/docs/providers-common-io/python/DOC.md"
+    },
+    {
+      "id": "github/apache-airflow/providers-common-io/airflow-decorators",
+      "title": "airflow.decorators is deprecated",
+      "pattern": "airflow\\.decorators",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Apache Airflow common.io provider for cross-filesystem transfers and object-store-backed XComs",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/apache-airflow/docs/providers-common-io/python/DOC.md"
+    },
+    {
+      "id": "github/apache-airflow/providers-exasol/get-pandas-df",
+      "title": "get_pandas_df() is deprecated",
+      "pattern": "\\bget_pandas_df\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Apache Airflow Exasol provider for Airflow connections, SQL tasks, and ExasolHook-based DAG workflows",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/apache-airflow/docs/providers-exasol/python/DOC.md"
+    },
+    {
+      "id": "github/apache-airflow/providers-exasol/get-uri",
+      "title": "get_uri() is deprecated",
+      "pattern": "\\bget_uri\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Apache Airflow Exasol provider for Airflow connections, SQL tasks, and ExasolHook-based DAG workflows",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/apache-airflow/docs/providers-exasol/python/DOC.md"
+    },
+    {
+      "id": "github/apache-airflow/providers-opsgenie/api-eu-opsgenie-com",
+      "title": "api.eu.opsgenie.com is deprecated",
+      "pattern": "api\\.eu\\.opsgenie\\.com",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Apache Airflow provider for creating and closing Opsgenie alerts from DAGs",
+      "replacement": "api.eu.opsgenie.com",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/apache-airflow/docs/providers-opsgenie/python/DOC.md"
+    },
+    {
+      "id": "github/apache-airflow/providers-oracle/extra-service-name",
+      "title": "extra.service_name is deprecated",
+      "pattern": "extra\\.service_name",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Apache Airflow Oracle provider for Airflow connections, SQL tasks, and OracleHook-based DAG workflows",
+      "replacement": "extra.service_name",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/apache-airflow/docs/providers-oracle/python/DOC.md"
+    },
+    {
+      "id": "github/apache-airflow/providers-oracle/oraclehook-callproc",
+      "title": "OracleHook.callproc( is deprecated",
+      "pattern": "OracleHook\\.callproc\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Apache Airflow Oracle provider for Airflow connections, SQL tasks, and OracleHook-based DAG workflows",
+      "replacement": "extra.service_name",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/apache-airflow/docs/providers-oracle/python/DOC.md"
+    },
+    {
+      "id": "github/apache-airflow/providers-presto/prestohook-get-pandas-df",
+      "title": "PrestoHook.get_pandas_df( is deprecated",
+      "pattern": "PrestoHook\\.get_pandas_df\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Apache Airflow Presto provider for Presto connections, SQL tasks, and hook-based DAG workflows",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/apache-airflow/docs/providers-presto/python/DOC.md"
+    },
+    {
+      "id": "github/apache-airflow/providers-qubole/airflow-sdk",
+      "title": "airflow.sdk is deprecated",
+      "pattern": "airflow\\.sdk",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Apache Airflow Qubole provider for running Qubole commands, checks, and sensors from Airflow DAGs",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/apache-airflow/docs/providers-qubole/python/DOC.md"
+    },
+    {
+      "id": "github/apache-airflow/providers-ssh/hook-get-conn",
+      "title": "hook.get_conn() is deprecated",
+      "pattern": "hook\\.get_conn\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Apache Airflow SSH provider for SSH connections, remote command execution, tunnels, and resilient detached remote jobs",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/apache-airflow/docs/providers-ssh/python/DOC.md"
+    },
+    {
+      "id": "github/apache-airflow/providers-ssh/get-tunnel",
+      "title": "get_tunnel() is deprecated",
+      "pattern": "\\bget_tunnel\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Apache Airflow SSH provider for SSH connections, remote command execution, tunnels, and resilient detached remote jobs",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/apache-airflow/docs/providers-ssh/python/DOC.md"
+    },
+    {
+      "id": "github/apache-airflow/providers-ssh/create-tunnel",
+      "title": "create_tunnel() is deprecated",
+      "pattern": "\\bcreate_tunnel\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Apache Airflow SSH provider for SSH connections, remote command execution, tunnels, and resilient detached remote jobs",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/apache-airflow/docs/providers-ssh/python/DOC.md"
+    },
+    {
+      "id": "github/apache-airflow/providers-tableau/extra-auth",
+      "title": "extra.auth is deprecated",
+      "pattern": "extra\\.auth",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Apache Airflow Tableau provider guide for configuring Tableau connections and running workbook or datasource refresh jobs from Python DAGs",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/apache-airflow/docs/providers-tableau/python/DOC.md"
+    },
+    {
+      "id": "github/apache-airflow/providers-vertica/hook-sqlalchemy-url",
+      "title": "hook.sqlalchemy_url is deprecated",
+      "pattern": "hook\\.sqlalchemy_url",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Apache Airflow Vertica provider for Airflow connections, SQL tasks, and VerticaHook-based DAG workflows",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/apache-airflow/docs/providers-vertica/python/DOC.md"
+    },
+    {
+      "id": "github/apache-airflow/providers-weaviate/weaviatehook-batch-data",
+      "title": "WeaviateHook.batch_data( is deprecated",
+      "pattern": "WeaviateHook\\.batch_data\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Apache Airflow Weaviate provider for Airflow-managed Weaviate connections, collection setup, and batch ingestion from DAGs",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/apache-airflow/docs/providers-weaviate/python/DOC.md"
+    },
+    {
+      "id": "github/apache-airflow/providers-yandex/airflow-providers-yandex-operators-yandexcloud-dataproc",
+      "title": "airflow.providers.yandex.operators.yandexcloud_dataproc is deprecated",
+      "pattern": "airflow\\.providers\\.yandex\\.operators\\.yandexcloud_dataproc",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Apache Airflow Yandex provider for Yandex Cloud connections, Yandex Query tasks, Data Proc clusters, and Lockbox secrets",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/apache-airflow/docs/providers-yandex/python/DOC.md"
+    },
+    {
+      "id": "github/apache-airflow/providers-yandex/airflow-providers-yandex-operators-dataproc",
+      "title": "airflow.providers.yandex.operators.dataproc is deprecated",
+      "pattern": "airflow\\.providers\\.yandex\\.operators\\.dataproc",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Apache Airflow Yandex provider for Yandex Cloud connections, Yandex Query tasks, Data Proc clusters, and Lockbox secrets",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/apache-airflow/docs/providers-yandex/python/DOC.md"
+    },
+    {
+      "id": "github/applitools/eyes-playwright/page-waitforselector",
+      "title": "page.waitForSelector is deprecated",
+      "pattern": "page\\.waitForSelector",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Applitools Eyes SDK for Playwright - Expert integration guide for visual AI testing",
+      "replacement": "page.waitForSelector",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/applitools/docs/eyes-playwright/javascript/DOC.md"
+    },
+    {
+      "id": "github/arrow/package/datetime-utcnow",
+      "title": "datetime.utcnow is deprecated",
+      "pattern": "datetime\\.utcnow",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Arrow Python package guide for creating, parsing, shifting, formatting, and localizing datetimes",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/arrow/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/asana/tasks/console-log",
+      "title": "console.log( is deprecated",
+      "pattern": "console\\.log\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Asana API coding guide for tasks, project management, and workflow",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/asana/docs/tasks/DOC.md"
+    },
+    {
+      "id": "github/async-timeout/package/asyncio-timeout",
+      "title": "asyncio.Timeout is deprecated",
+      "pattern": "asyncio\\.Timeout",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "async-timeout compatibility timeout context manager for asyncio code on Python 3.8+",
+      "replacement": "asyncio.wait_for()",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/async-timeout/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/async-timeout/package/asyncio-timeout-at",
+      "title": "asyncio.timeout_at() is deprecated",
+      "pattern": "asyncio\\.timeout_at\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "async-timeout compatibility timeout context manager for asyncio code on Python 3.8+",
+      "replacement": "asyncio.wait_for()",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/async-timeout/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/async-timeout/package/asyncio-wait-for",
+      "title": "asyncio.wait_for() is deprecated",
+      "pattern": "asyncio\\.wait_for\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "async-timeout compatibility timeout context manager for asyncio code on Python 3.8+",
+      "replacement": "asyncio.wait_for()",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/async-timeout/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/async-timeout/package/cm-expired",
+      "title": "cm.expired is deprecated",
+      "pattern": "cm\\.expired",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "async-timeout compatibility timeout context manager for asyncio code on Python 3.8+",
+      "replacement": "asyncio.wait_for()",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/async-timeout/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/attrs/package/attr-s",
+      "title": "attr.s is deprecated",
+      "pattern": "attr\\.s",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "attrs package guide for Python declarative classes, validators, converters, and serialization helpers",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/attrs/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/attrs/package/attr-ib",
+      "title": "attr.ib is deprecated",
+      "pattern": "attr\\.ib",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "attrs package guide for Python declarative classes, validators, converters, and serialization helpers",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/attrs/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/attrs/package/attrs-evolve",
+      "title": "attrs.evolve() is deprecated",
+      "pattern": "attrs\\.evolve\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "attrs package guide for Python declarative classes, validators, converters, and serialization helpers",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/attrs/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/attrs/package/attrs-asdict",
+      "title": "attrs.asdict() is deprecated",
+      "pattern": "attrs\\.asdict\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "attrs package guide for Python declarative classes, validators, converters, and serialization helpers",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/attrs/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/auth0/identity/console-log",
+      "title": "console.log( is deprecated",
+      "pattern": "console\\.log\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Auth0 JavaScript/Node.js SDK for OAuth, OIDC, and identity management in server-side applications",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/auth0/docs/identity/javascript/DOC.md"
+    },
+    {
+      "id": "github/av/package/av-open",
+      "title": "av.open( is deprecated",
+      "pattern": "av\\.open\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "PyAV Python bindings for FFmpeg for decoding, encoding, remuxing, and frame conversion",
+      "replacement": "av.open(",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/av/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/av/package/frame-pts",
+      "title": "frame.pts is deprecated",
+      "pattern": "frame\\.pts",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "PyAV Python bindings for FFmpeg for decoding, encoding, remuxing, and frame conversion",
+      "replacement": "av.open(",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/av/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/av/package/packet-pts",
+      "title": "packet.pts is deprecated",
+      "pattern": "packet\\.pts",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "PyAV Python bindings for FFmpeg for decoding, encoding, remuxing, and frame conversion",
+      "replacement": "av.open(",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/av/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/av/package/pyav-org",
+      "title": "pyav.org is deprecated",
+      "pattern": "pyav\\.org",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "PyAV Python bindings for FFmpeg for decoding, encoding, remuxing, and frame conversion",
+      "replacement": "av.open(",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/av/docs/package/python/DOC.md"
+    },
+    {
+      "id": "github/aws/aiobotocore/asyncio-run",
+      "title": "asyncio.run( is deprecated",
+      "pattern": "asyncio\\.run\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "aiobotocore package guide for async AWS clients with botocore-compatible APIs, aiohttp transport, and AioConfig",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/aiobotocore/python/DOC.md"
+    },
+    {
+      "id": "github/aws/aiobotocore/get-event-loop",
+      "title": "get_event_loop() is deprecated",
+      "pattern": "\\bget_event_loop\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "aiobotocore package guide for async AWS clients with botocore-compatible APIs, aiohttp transport, and AioConfig",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/aiobotocore/python/DOC.md"
+    },
+    {
+      "id": "github/aws/boto3/boto3-amazonaws-com",
+      "title": "boto3.amazonaws.com is deprecated",
+      "pattern": "boto3\\.amazonaws\\.com",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "AWS SDK for Python (boto3) package guide with sessions, clients, credentials, retries, paginators, waiters, and concurrency rules",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/boto3/python/DOC.md"
+    },
+    {
+      "id": "github/aws/boto3/docs-aws-amazon-com",
+      "title": "docs.aws.amazon.com is deprecated",
+      "pattern": "docs\\.aws\\.amazon\\.com",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "AWS SDK for Python (boto3) package guide with sessions, clients, credentials, retries, paginators, waiters, and concurrency rules",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/boto3/python/DOC.md"
+    },
+    {
+      "id": "github/aws/cloudfront-signer/getsignedcookies",
+      "title": "getSignedCookies() is deprecated",
+      "pattern": "\\bgetSignedCookies\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "AWS SDK for JavaScript v3 helpers for creating CloudFront signed URLs and signed cookies for private content.",
+      "replacement": "getSignedCookies()",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/cloudfront-signer/javascript/DOC.md"
+    },
+    {
+      "id": "github/aws/connect/client-send",
+      "title": "client.send( is deprecated",
+      "pattern": "client\\.send\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "AWS SDK for JavaScript v3 client for Amazon Connect instance, user, metrics, and outbound contact APIs",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/connect/javascript/DOC.md"
+    },
+    {
+      "id": "github/aws/credential-providers/fromtemporarycredentials",
+      "title": "fromTemporaryCredentials() is deprecated",
+      "pattern": "\\bfromTemporaryCredentials\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "AWS SDK for JavaScript v3 credential provider helpers for shared profiles, IAM Identity Center, STS assume-role, web identity, Cognito, and Node.js credential resolution.",
+      "replacement": "fromTemporaryCredentials()",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/credential-providers/javascript/DOC.md"
+    },
+    {
+      "id": "github/aws/credential-providers/fromwebtoken",
+      "title": "fromWebToken() is deprecated",
+      "pattern": "\\bfromWebToken\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "AWS SDK for JavaScript v3 credential provider helpers for shared profiles, IAM Identity Center, STS assume-role, web identity, Cognito, and Node.js credential resolution.",
+      "replacement": "fromTemporaryCredentials()",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/credential-providers/javascript/DOC.md"
+    },
+    {
+      "id": "github/aws/credential-providers/fromsso",
+      "title": "fromSSO() is deprecated",
+      "pattern": "\\bfromSSO\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "AWS SDK for JavaScript v3 credential provider helpers for shared profiles, IAM Identity Center, STS assume-role, web identity, Cognito, and Node.js credential resolution.",
+      "replacement": "fromTemporaryCredentials()",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/credential-providers/javascript/DOC.md"
+    },
+    {
+      "id": "github/aws/credential-providers/fromini",
+      "title": "fromIni() is deprecated",
+      "pattern": "\\bfromIni\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "AWS SDK for JavaScript v3 credential provider helpers for shared profiles, IAM Identity Center, STS assume-role, web identity, Cognito, and Node.js credential resolution.",
+      "replacement": "fromTemporaryCredentials()",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/credential-providers/javascript/DOC.md"
+    },
+    {
+      "id": "github/aws/credential-providers/fromcognitoidentity",
+      "title": "fromCognitoIdentity() is deprecated",
+      "pattern": "\\bfromCognitoIdentity\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "AWS SDK for JavaScript v3 credential provider helpers for shared profiles, IAM Identity Center, STS assume-role, web identity, Cognito, and Node.js credential resolution.",
+      "replacement": "fromTemporaryCredentials()",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/credential-providers/javascript/DOC.md"
+    },
+    {
+      "id": "github/aws/credential-providers/fromcognitoidentitypool",
+      "title": "fromCognitoIdentityPool() is deprecated",
+      "pattern": "\\bfromCognitoIdentityPool\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "AWS SDK for JavaScript v3 credential provider helpers for shared profiles, IAM Identity Center, STS assume-role, web identity, Cognito, and Node.js credential resolution.",
+      "replacement": "fromTemporaryCredentials()",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/credential-providers/javascript/DOC.md"
+    },
+    {
+      "id": "github/aws/dynamodb/aws-dynamodb",
+      "title": "AWS.DynamoDB() is deprecated",
+      "pattern": "AWS\\.DynamoDB\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "AWS SDK for JavaScript v3 DynamoDB client for low-level table and item operations.",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/dynamodb/javascript/DOC.md"
+    },
+    {
+      "id": "github/aws/firehose/record-data",
+      "title": "Record.Data is deprecated",
+      "pattern": "Record\\.Data",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "AWS SDK for JavaScript v3 client for Amazon Data Firehose delivery stream writes and stream inspection APIs.",
+      "replacement": "Record.Data",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/firehose/javascript/DOC.md"
+    },
+    {
+      "id": "github/aws/lib-dynamodb/marshalloptions-allowimprecisenumbers",
+      "title": "marshallOptions.allowImpreciseNumbers is deprecated",
+      "pattern": "marshallOptions\\.allowImpreciseNumbers",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "AWS SDK for JavaScript v3 DynamoDB document client for reading and writing plain JavaScript objects.",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/lib-dynamodb/javascript/DOC.md"
+    },
+    {
+      "id": "github/aws/lib-dynamodb/dynamodbdocumentclient-destroy",
+      "title": "DynamoDBDocumentClient.destroy() is deprecated",
+      "pattern": "DynamoDBDocumentClient\\.destroy\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "AWS SDK for JavaScript v3 DynamoDB document client for reading and writing plain JavaScript objects.",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/lib-dynamodb/javascript/DOC.md"
+    },
+    {
+      "id": "github/aws/middleware-stack/add",
+      "title": "add() is deprecated",
+      "pattern": "\\badd\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "AWS SDK for JavaScript v3 middleware stack utilities for composing, ordering, and debugging low-level client middleware.",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/middleware-stack/javascript/DOC.md"
+    },
+    {
+      "id": "github/aws/middleware-stack/addrelativeto",
+      "title": "addRelativeTo() is deprecated",
+      "pattern": "\\baddRelativeTo\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "AWS SDK for JavaScript v3 middleware stack utilities for composing, ordering, and debugging low-level client middleware.",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/middleware-stack/javascript/DOC.md"
+    },
+    {
+      "id": "github/aws/middleware-stack/removebytag",
+      "title": "removeByTag() is deprecated",
+      "pattern": "\\bremoveByTag\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "AWS SDK for JavaScript v3 middleware stack utilities for composing, ordering, and debugging low-level client middleware.",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/middleware-stack/javascript/DOC.md"
+    },
+    {
+      "id": "github/aws/mypy-boto3-codepipeline/boto3-session",
+      "title": "boto3.Session( is deprecated",
+      "pattern": "boto3\\.Session\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "mypy-boto3-codepipeline package guide for typed boto3 CodePipeline clients, paginators, literals, and TypedDicts",
+      "replacement": "boto3.Session(",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/mypy-boto3-codepipeline/python/DOC.md"
+    },
+    {
+      "id": "github/aws/mypy-boto3-codepipeline/botocore-config-config",
+      "title": "botocore.config.Config( is deprecated",
+      "pattern": "botocore\\.config\\.Config\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "mypy-boto3-codepipeline package guide for typed boto3 CodePipeline clients, paginators, literals, and TypedDicts",
+      "replacement": "boto3.Session(",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/mypy-boto3-codepipeline/python/DOC.md"
+    },
+    {
+      "id": "github/aws/mypy-boto3-evidently/session-client",
+      "title": "session.client( is deprecated",
+      "pattern": "session\\.client\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "mypy-boto3-evidently type stubs for typed boto3 CloudWatch Evidently clients, paginators, literals, and TypedDict shapes",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/mypy-boto3-evidently/python/DOC.md"
+    },
+    {
+      "id": "github/aws/mypy-boto3-evidently/evidently-get-project",
+      "title": "evidently.get_project( is deprecated",
+      "pattern": "evidently\\.get_project\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "mypy-boto3-evidently type stubs for typed boto3 CloudWatch Evidently clients, paginators, literals, and TypedDict shapes",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/mypy-boto3-evidently/python/DOC.md"
+    },
+    {
+      "id": "github/aws/mypy-boto3-evidently/json-dumps",
+      "title": "json.dumps( is deprecated",
+      "pattern": "json\\.dumps\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "mypy-boto3-evidently type stubs for typed boto3 CloudWatch Evidently clients, paginators, literals, and TypedDict shapes",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/mypy-boto3-evidently/python/DOC.md"
+    },
+    {
+      "id": "github/aws/mypy-boto3-evidently/datetime-now",
+      "title": "datetime.now( is deprecated",
+      "pattern": "datetime\\.now\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "mypy-boto3-evidently type stubs for typed boto3 CloudWatch Evidently clients, paginators, literals, and TypedDict shapes",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/mypy-boto3-evidently/python/DOC.md"
+    },
+    {
+      "id": "github/aws/mypy-boto3-lex-runtime/boto3-client",
+      "title": "boto3.client( is deprecated",
+      "pattern": "boto3\\.client\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Typed boto3 stubs for Amazon Lex Runtime V1 clients, literals, and TypedDict request and response shapes in Python",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/mypy-boto3-lex-runtime/python/DOC.md"
+    },
+    {
+      "id": "github/aws/mypy-boto3-organizations/session-client",
+      "title": "session.client( is deprecated",
+      "pattern": "session\\.client\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "mypy-boto3-organizations type stubs for boto3 Organizations clients, paginators, literals, and TypedDict shapes",
+      "replacement": "session.client(",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/mypy-boto3-organizations/python/DOC.md"
+    },
+    {
+      "id": "github/aws/mypy-boto3-ses/boto3-client",
+      "title": "boto3.client( is deprecated",
+      "pattern": "boto3\\.client\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Typed boto3 stubs for Amazon SES clients, paginators, waiters, literals, and TypedDict request shapes in Python",
+      "replacement": "boto3.client(",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/mypy-boto3-ses/python/DOC.md"
+    },
+    {
+      "id": "github/aws/mypy-boto3-ses/session-client",
+      "title": "session.client( is deprecated",
+      "pattern": "session\\.client\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Typed boto3 stubs for Amazon SES clients, paginators, waiters, literals, and TypedDict request shapes in Python",
+      "replacement": "boto3.client(",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/mypy-boto3-ses/python/DOC.md"
+    },
+    {
+      "id": "github/aws/network-firewall/statefulruleoptions-ruleorder",
+      "title": "StatefulRuleOptions.RuleOrder is deprecated",
+      "pattern": "StatefulRuleOptions\\.RuleOrder",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "AWS SDK for JavaScript v3 client for creating and managing AWS Network Firewall rule groups, firewall policies, firewalls, protections, and logging.",
+      "replacement": "StatefulRuleOptions.RuleOrder",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/network-firewall/javascript/DOC.md"
+    },
+    {
+      "id": "github/aws/organizations/organization-availablepolicytypes",
+      "title": "Organization.AvailablePolicyTypes is deprecated",
+      "pattern": "Organization\\.AvailablePolicyTypes",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "AWS SDK for JavaScript v3 client for AWS Organizations account, root, OU, and policy APIs.",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/organizations/javascript/DOC.md"
+    },
+    {
+      "id": "github/aws/rekognition/image-s3object",
+      "title": "Image.S3Object is deprecated",
+      "pattern": "Image\\.S3Object",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "AWS SDK for JavaScript v3 client for Rekognition image analysis, face collections, text detection, and asynchronous video jobs",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/rekognition/javascript/DOC.md"
+    },
+    {
+      "id": "github/aws/rekognition/image-bytes",
+      "title": "Image.Bytes is deprecated",
+      "pattern": "Image\\.Bytes",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "AWS SDK for JavaScript v3 client for Rekognition image analysis, face collections, text detection, and asynchronous video jobs",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/rekognition/javascript/DOC.md"
+    },
+    {
+      "id": "github/aws/sfn/json-stringify",
+      "title": "JSON.stringify( is deprecated",
+      "pattern": "JSON\\.stringify\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "AWS SDK for JavaScript v3 client for Step Functions state machines, executions, execution history, and workflow definitions",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/sfn/javascript/DOC.md"
+    },
+    {
+      "id": "github/aws/sfn/json-parse",
+      "title": "JSON.parse( is deprecated",
+      "pattern": "JSON\\.parse\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "AWS SDK for JavaScript v3 client for Step Functions state machines, executions, execution history, and workflow definitions",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/sfn/javascript/DOC.md"
+    },
+    {
+      "id": "github/aws/smithy-client/resolvemiddleware",
+      "title": "resolveMiddleware() is deprecated",
+      "pattern": "\\bresolveMiddleware\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Low-level AWS SDK for JavaScript v3 Smithy runtime for building custom clients, commands, and middleware stacks.",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/smithy-client/javascript/DOC.md"
+    },
+    {
+      "id": "github/aws/smithy-client/serialize",
+      "title": "serialize() is deprecated",
+      "pattern": "\\bserialize\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Low-level AWS SDK for JavaScript v3 Smithy runtime for building custom clients, commands, and middleware stacks.",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/smithy-client/javascript/DOC.md"
+    },
+    {
+      "id": "github/aws/smithy-client/deserialize",
+      "title": "deserialize() is deprecated",
+      "pattern": "\\bdeserialize\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Low-level AWS SDK for JavaScript v3 Smithy runtime for building custom clients, commands, and middleware stacks.",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/smithy-client/javascript/DOC.md"
+    },
+    {
+      "id": "github/aws/smithy-client/destroy",
+      "title": "destroy() is deprecated",
+      "pattern": "\\bdestroy\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Low-level AWS SDK for JavaScript v3 Smithy runtime for building custom clients, commands, and middleware stacks.",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/smithy-client/javascript/DOC.md"
+    },
+    {
+      "id": "github/aws/smithy-client/client-destroy",
+      "title": "client.destroy() is deprecated",
+      "pattern": "client\\.destroy\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Low-level AWS SDK for JavaScript v3 Smithy runtime for building custom clients, commands, and middleware stacks.",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/smithy-client/javascript/DOC.md"
+    },
+    {
+      "id": "github/aws/textract/document-s3object",
+      "title": "Document.S3Object is deprecated",
+      "pattern": "Document\\.S3Object",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "AWS SDK for JavaScript v3 Textract client for OCR, form and table analysis, and asynchronous document-processing jobs.",
+      "replacement": "Document.S3Object",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/textract/javascript/DOC.md"
+    },
+    {
+      "id": "github/aws/textract/document-bytes",
+      "title": "Document.Bytes is deprecated",
+      "pattern": "Document\\.Bytes",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "AWS SDK for JavaScript v3 Textract client for OCR, form and table analysis, and asynchronous document-processing jobs.",
+      "replacement": "Document.S3Object",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/textract/javascript/DOC.md"
+    },
+    {
+      "id": "github/aws/types/args-request",
+      "title": "args.request is deprecated",
+      "pattern": "args\\.request",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Shared AWS SDK for JavaScript v3 type definitions for credentials, middleware, paginators, waiters, and response metadata.",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/types/javascript/DOC.md"
+    },
+    {
+      "id": "github/aws/types/result-response",
+      "title": "result.response is deprecated",
+      "pattern": "result\\.response",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Shared AWS SDK for JavaScript v3 type definitions for credentials, middleware, paginators, waiters, and response metadata.",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/types/javascript/DOC.md"
+    },
+    {
+      "id": "github/aws/types/httprequest-isinstance",
+      "title": "HttpRequest.isInstance() is deprecated",
+      "pattern": "HttpRequest\\.isInstance\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Shared AWS SDK for JavaScript v3 type definitions for credentials, middleware, paginators, waiters, and response metadata.",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/types/javascript/DOC.md"
+    },
+    {
+      "id": "github/aws/types/httpresponse-isinstance",
+      "title": "HttpResponse.isInstance() is deprecated",
+      "pattern": "HttpResponse\\.isInstance\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Shared AWS SDK for JavaScript v3 type definitions for credentials, middleware, paginators, waiters, and response metadata.",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/aws/docs/types/javascript/DOC.md"
+    },
+    {
+      "id": "github/azure/arm-deviceprovisioningservices/dpsclient-iotdpsresource-listbysubscription",
+      "title": "dpsClient.iotDpsResource.listBySubscription() is deprecated",
+      "pattern": "dpsClient\\.iotDpsResource\\.listBySubscription\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Azure Device Provisioning Services management client for JavaScript with practical guidance for authentication, provisioning-service lifecycle operations, and shared access key lookup",
+      "replacement": "dpsClient.iotDpsResource.listBySubscription()",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/azure/docs/arm-deviceprovisioningservices/javascript/DOC.md"
+    },
+    {
+      "id": "github/azure/arm-keyvault/keyvaultclient-vaults-listbysubscription",
+      "title": "keyVaultClient.vaults.listBySubscription() is deprecated",
+      "pattern": "keyVaultClient\\.vaults\\.listBySubscription\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Azure Key Vault management client for JavaScript with practical guidance for provisioning vaults, checking name availability, and updating ARM control-plane settings",
+      "replacement": "keyVaultClient.vaults.listBySubscription()",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/azure/docs/arm-keyvault/javascript/DOC.md"
+    },
+    {
+      "id": "github/azure/cognitiveservices-speech/threading-event",
+      "title": "threading.Event is deprecated",
+      "pattern": "threading\\.Event",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Azure Cognitive Services Speech SDK for Python for speech recognition, synthesis, translation, and language identification",
+      "replacement": "threading.Event",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/azure/docs/cognitiveservices-speech/python/DOC.md"
+    },
+    {
+      "id": "github/azure/cognitiveservices-speech/speak-ssml-async",
+      "title": "speak_ssml_async() is deprecated",
+      "pattern": "\\bspeak_ssml_async\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "Azure Cognitive Services Speech SDK for Python for speech recognition, synthesis, translation, and language identification",
+      "replacement": "threading.Event",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/azure/docs/cognitiveservices-speech/python/DOC.md"
+    },
+    {
+      "id": "github/azure/common/azure-common-cloud-get-cli-active-cloud",
+      "title": "azure.common.cloud.get_cli_active_cloud() is deprecated",
+      "pattern": "azure\\.common\\.cloud\\.get_cli_active_cloud\\s*\\(",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "azure-common package guide for Python legacy Azure SDK auth helpers, client factories, cloud helpers, and compatibility exceptions",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/azure/docs/common/python/DOC.md"
+    },
+    {
+      "id": "github/azure/common/azure-common-exceptions",
+      "title": "azure.common.exceptions is deprecated",
+      "pattern": "azure\\.common\\.exceptions",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "azure-common package guide for Python legacy Azure SDK auth helpers, client factories, cloud helpers, and compatibility exceptions",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/azure/docs/common/python/DOC.md"
+    },
+    {
+      "id": "github/azure/common/azure-common",
+      "title": "azure.common is deprecated",
+      "pattern": "azure\\.common",
+      "severity": "high",
+      "languages": [
+        "any"
+      ],
+      "guidance": "azure-common package guide for Python legacy Azure SDK auth helpers, client factories, cloud helpers, and compatibility exceptions",
+      "replacement": "See cached CHUB docs",
+      "docsUrl": "https://github.com/andrewyng/context-hub/blob/main/content/azure/docs/common/python/DOC.md"
+    }
+  ]
+}

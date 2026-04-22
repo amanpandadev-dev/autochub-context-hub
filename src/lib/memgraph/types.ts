@@ -57,6 +57,7 @@ export interface Finding {
   guidance: string;
   replacement: string;
   docsUrl?: string;
+  localDocPath?: string;
   /** How many call-graph hops away from a direct usage (0 = direct) */
   propagationDepth: number;
   /** Functions in the propagation chain */
