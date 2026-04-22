@@ -37,6 +37,7 @@ memgraph_data/
 # Temporary
 tmp/
 temp/
+.autochub/
 
 # Test coverage
 coverage/

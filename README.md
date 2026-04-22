@@ -35,6 +35,7 @@ autochub init
 
 ### 2. Analyze
 Scan your project for deprecated APIs. Use `--with-graph` for deep analysis and `--use-chub` for documentation enrichment.
+By default, `autochub analyze` also saves an HTML findings report at `.autochub/reports/latest-findings.html` and opens it for interactive terminal runs.
 
 ```bash
 autochub analyze . --with-graph --use-chub

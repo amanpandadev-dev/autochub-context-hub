@@ -448,7 +448,10 @@ async function runAnalyzerForPath(
 
   applyDiagnostics(report, workspaceRoot);
   if (options?.openReport) {
-    showFindingsReportPanel(report, workspaceRoot, options.reportTitle ?? path.basename(targetPath));
+    const reportTitle = options.reportTitle ?? path.basename(targetPath);
+    const reportPath = writeFindingsMarkdownReport(report, workspaceRoot, reportTitle);
+    showFindingsReportPanel(report, workspaceRoot, reportTitle, reportPath);
+    vscode.window.setStatusBarMessage('Auto-CHUB: analysis complete. Findings report opened.', 5000);
   }
 
   if (options?.specificUri) {
@@ -464,9 +467,14 @@ async function runAnalyzerForPath(
   }
 }
 
-function showFindingsReportPanel(report: AnalyzerReport, workspaceRoot: string, title: string): void {
+function showFindingsReportPanel(
+  report: AnalyzerReport,
+  workspaceRoot: string,
+  title: string,
+  reportPath?: string
+): void {
   if (findingsReportPanel) {
-    findingsReportPanel.webview.html = renderFindingsReportHtml(report, workspaceRoot, title);
+    findingsReportPanel.webview.html = renderFindingsReportHtml(report, workspaceRoot, title, reportPath);
     findingsReportPanel.reveal(vscode.ViewColumn.Beside);
     return;
   }
@@ -481,7 +489,7 @@ function showFindingsReportPanel(report: AnalyzerReport, workspaceRoot: string, 
     }
   );
 
-  findingsReportPanel.webview.html = renderFindingsReportHtml(report, workspaceRoot, title);
+  findingsReportPanel.webview.html = renderFindingsReportHtml(report, workspaceRoot, title, reportPath);
   findingsReportPanel.webview.onDidReceiveMessage((message: unknown) => {
     void handleFindingsReportMessage(message);
   });
@@ -523,10 +531,110 @@ async function handleFindingsReportMessage(message: unknown): Promise<void> {
   }
 }
 
-function renderFindingsReportHtml(report: AnalyzerReport, workspaceRoot: string, title: string): string {
+function writeFindingsMarkdownReport(
+  report: AnalyzerReport,
+  workspaceRoot: string,
+  title: string
+): string | undefined {
+  try {
+    const reportsDir = path.join(workspaceRoot, '.autochub', 'reports');
+    fs.mkdirSync(reportsDir, { recursive: true });
+
+    const reportPath = path.join(reportsDir, 'latest-findings.md');
+    fs.writeFileSync(reportPath, renderFindingsMarkdownReport(report, workspaceRoot, title), 'utf8');
+    return reportPath;
+  } catch (error) {
+    console.error('Auto-CHUB report write failed:', error);
+    vscode.window.showWarningMessage('Auto-CHUB: analysis completed, but the report file could not be saved.');
+    return undefined;
+  }
+}
+
+function renderFindingsMarkdownReport(report: AnalyzerReport, workspaceRoot: string, title: string): string {
+  const files = report.files ?? [];
+  const totalFindings = report.totalFindings ?? files.reduce((sum, file) => sum + file.findings.length, 0);
+  const lines: string[] = [
+    '# Auto-CHUB Findings',
+    '',
+    `Target: ${title}`,
+    `Generated: ${new Date().toISOString()}`,
+    '',
+    '## Summary',
+    '',
+    `- Findings: ${totalFindings}`,
+    `- Files scanned: ${report.scannedFiles ?? 0}`,
+    `- Critical: ${report.criticalCount ?? countSeverity(files, 'critical')}`,
+    `- High: ${report.highCount ?? countSeverity(files, 'high')}`,
+    `- Medium: ${report.mediumCount ?? countSeverity(files, 'medium')}`,
+    `- Low: ${report.lowCount ?? countSeverity(files, 'low')}`,
+    `- Scan time: ${report.durationMs ?? 0}ms`,
+    '',
+  ];
+
+  if (files.length === 0) {
+    lines.push('No deprecated APIs found.');
+    lines.push('');
+    return lines.join('\n');
+  }
+
+  lines.push('## Findings by File', '');
+
+  for (const file of files) {
+    const absolutePath = resolveReportedPath(file.filePath, workspaceRoot);
+    const relativePath = path.relative(workspaceRoot, absolutePath) || path.basename(absolutePath);
+    const risk = typeof file.riskScore === 'number' ? `Risk ${file.riskScore}%` : `${file.findings.length} findings`;
+    lines.push(`### ${relativePath}`);
+    lines.push('');
+    lines.push(`Path: ${absolutePath}`);
+    lines.push(`Risk: ${risk}`);
+    lines.push('');
+
+    for (const finding of file.findings) {
+      lines.push(`#### ${finding.title}`);
+      lines.push('');
+      lines.push(`- Severity: ${finding.severity}`);
+      lines.push(`- Location: ${absolutePath}:${finding.line}:${finding.col}`);
+      lines.push(`- Snippet: \`${inlineCode(finding.snippet || '')}\``);
+      lines.push(`- Guidance: ${finding.guidance || 'Manual review'}`);
+      lines.push(`- Replacement: ${finding.replacement || 'Manual review'}`);
+      if (finding.propagationDepth && finding.propagationDepth > 0) {
+        lines.push(`- Propagation depth: ${finding.propagationDepth}`);
+      }
+      if (finding.propagationChain?.length) {
+        lines.push(`- Propagation chain: ${finding.propagationChain.join(' -> ')}`);
+      }
+      if (finding.localDocPath) {
+        lines.push(`- Offline docs: ${finding.localDocPath}`);
+      }
+      if (finding.docsUrl) {
+        lines.push(`- Source docs: ${finding.docsUrl}`);
+      }
+      lines.push('');
+    }
+  }
+
+  return lines.join('\n');
+}
+
+function inlineCode(value: string): string {
+  return value.replace(/`/g, '\\`').replace(/\r?\n/g, ' ');
+}
+
+function renderFindingsReportHtml(
+  report: AnalyzerReport,
+  workspaceRoot: string,
+  title: string,
+  reportPath?: string
+): string {
   const files = report.files ?? [];
   const totalFindings = report.totalFindings ?? files.reduce((sum, file) => sum + file.findings.length, 0);
   const generatedAt = new Date().toLocaleString();
+  const savedReport = reportPath
+    ? `<div class="subtle report-path">
+        Saved report:
+        <button data-command="openDoc" data-target="${escapeHtml(reportPath)}">${escapeHtml(path.relative(workspaceRoot, reportPath))}</button>
+      </div>`
+    : '';
   const fileSections = files.length > 0
     ? files.map((file, fileIndex) => renderFileFindings(file, fileIndex, workspaceRoot)).join('\n')
     : `<section class="empty">
@@ -698,6 +806,7 @@ function renderFindingsReportHtml(report: AnalyzerReport, workspaceRoot: string,
       <header>
         <h1>Auto-CHUB Findings</h1>
         <div class="subtle">${escapeHtml(title)} - generated ${escapeHtml(generatedAt)}</div>
+        ${savedReport}
         <div class="summary">
           ${renderMetric(totalFindings, 'Findings')}
           ${renderMetric(report.scannedFiles ?? 0, 'Files scanned')}

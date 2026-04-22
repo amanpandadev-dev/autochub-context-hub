@@ -20,10 +20,11 @@ const COMMANDS: CommandGuide[] = [
   {
     name: 'analyze',
     usage: 'autochub analyze [path] [options]',
-    useCase: 'Scan source files and find deprecated APIs, risky patterns, and migration hints.',
+    useCase: 'Scan source files, find deprecated APIs, and create an HTML findings report.',
     examples: [
       'autochub analyze .',
       'autochub analyze src --with-graph',
+      'autochub analyze . --no-open-report',
       'autochub analyze . --severity high --output json',
     ],
   },

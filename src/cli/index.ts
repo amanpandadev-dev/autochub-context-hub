@@ -29,6 +29,9 @@ program
   .option('--max-results <number>', 'Limit number of results')
   .option('--rules <file>', 'Path to a JSON file with custom deprecation rules')
   .option('--use-chub', 'Enrich findings with Andrew Ng\'s Context Hub documentation')
+  .option('--report', 'Write an HTML findings report even for non-table output')
+  .option('--report-file <file>', 'Path for the HTML findings report')
+  .option('--no-open-report', 'Do not open the generated HTML report after analysis')
   .action(analyzeCommand);
 
 // ── fix ───────────────────────────────────────────────────────────────────────
